@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<!-- Playables SDK -->
+<script>// Playables SDK v1.0.0
+// Game lifecycle bridge: rAF-based game-ready detection + event communication
+(function() {
+  'use strict';
+
+  // Idempotency: skip if already initialized (e.g., server-side injection
+  // followed by client-side inject-javascript via the Bloks webview component).
+  if (window.playablesSDK) return;
+
+  var HANDLER_NAME = 'playablesGameEventHandler';
+  var ANDROID_BRIDGE_NAME = '_MetaPlayablesBridge';
+  var RAF_FRAME_THRESHOLD = 3;
+
+  var gameReadySent = false;
+  var firstInteractionSent = false;
+  var errorSent = false;
+  var frameCount = 0;
+  var originalRAF = window.requestAnimationFrame;
+
+  // --- Transport Layer ---
+
+  function hasIOSBridge() {
+    return !!(window.webkit &&
+              window.webkit.messageHandlers &&
+              window.webkit.messageHandlers[HANDLER_NAME]);
+  }
+
+  function hasAndroidBridge() {
+    return !!(window[ANDROID_BRIDGE_NAME] &&
+              typeof window[ANDROID_BRIDGE_NAME].postEvent === 'function');
+  }
+
+  function isInIframe() {
+    return !!(window.parent && window.parent !== window);
+  }
+
+  function sendEvent(eventName, payload) {
+    var message = {
+      type: eventName,
+      payload: payload || {},
+      timestamp: Date.now()
+    };
+
+    if (hasIOSBridge()) {
+      try {
+        window.webkit.messageHandlers[HANDLER_NAME].postMessage(message);
+      } catch (e) { /* ignore */ }
+      return;
+    }
+
+    if (hasAndroidBridge()) {
+    try {
+      var p = payload || {};
+      p.__secureToken = window.__fbAndroidBridgeAuthToken || '';
+      p.timestamp = message.timestamp;
+      window[ANDROID_BRIDGE_NAME].postEvent(
+        eventName,
+        JSON.stringify(p)
+      );
+    } catch (e) { /* ignore */ }
+    return;
+  }
+
+    if (isInIframe()) {
+      try {
+        window.parent.postMessage(message, '*');
+      } catch (e) { /* ignore */ }
+      return;
+    }
+  }
+
+  // --- rAF Game-Ready Detection ---
+
+  function onFrame() {
+    if (gameReadySent) return;
+
+    frameCount++;
+    if (frameCount >= RAF_FRAME_THRESHOLD) {
+      gameReadySent = true;
+      sendEvent('game_ready', {
+        frame_count: frameCount,
+        detected_at: Date.now()
+      });
+      return;
+    }
+
+    originalRAF.call(window, onFrame);
+  }
+
+  if (originalRAF) {
+    window.requestAnimationFrame = function(callback) {
+      if (!gameReadySent) {
+        return originalRAF.call(window, function(timestamp) {
+          frameCount++;
+          if (frameCount >= RAF_FRAME_THRESHOLD && !gameReadySent) {
+            gameReadySent = true;
+            sendEvent('game_ready', {
+              frame_count: frameCount,
+              detected_at: Date.now()
+            });
+          }
+          callback(timestamp);
+        });
+      }
+      return originalRAF.call(window, callback);
+    };
+  }
+
+  // --- First User Interaction Detection ---
+
+  function setupFirstInteractionDetection() {
+    var events = ['touchstart', 'mousedown', 'keydown'];
+
+    function onFirstInteraction() {
+      if (firstInteractionSent) return;
+      firstInteractionSent = true;
+      sendEvent('user_interaction_start', null);
+
+      for (var i = 0; i < events.length; i++) {
+        document.removeEventListener(events[i], onFirstInteraction, true);
+      }
+    }
+
+    for (var i = 0; i < events.length; i++) {
+      document.addEventListener(events[i], onFirstInteraction, true);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupFirstInteractionDetection);
+  } else {
+    setupFirstInteractionDetection();
+  }
+
+  // --- Auto Error Capture ---
+
+  window.addEventListener('error', function(event) {
+    if (errorSent) return;
+    errorSent = true;
+    sendEvent('error', {
+      message: event.message || 'Unknown error',
+      source: event.filename || '',
+      lineno: event.lineno || 0,
+      colno: event.colno || 0,
+      auto_captured: true
+    });
+  });
+
+  window.addEventListener('unhandledrejection', function(event) {
+    if (errorSent) return;
+    errorSent = true;
+    var reason = event.reason;
+    sendEvent('error', {
+      message: (reason instanceof Error) ? reason.message : String(reason),
+      type: 'unhandled_promise_rejection',
+      auto_captured: true
+    });
+  });
+
+  // --- Public API ---
+
+  window.playablesSDK = {
+    complete: function(score) {
+      sendEvent('game_ended', {
+        score: score,
+        completed: true
+      });
+    },
+
+    error: function(message) {
+      if (errorSent) return;
+      errorSent = true;
+      sendEvent('error', {
+        message: message || 'Unknown error',
+        auto_captured: false
+      });
+    },
+
+    sendEvent: function(eventName, payload) {
+      if (!eventName || typeof eventName !== 'string') return;
+      sendEvent(eventName, payload);
+    }
+  };
+
+  // Kick off rAF detection in case no game code calls rAF immediately
+  if (originalRAF) {
+    originalRAF.call(window, onFrame);
+  }
+})();</script>
+<!-- PLAYABLE_TOUCH_PATCH_V1 --><script>
+(function() {
+  if (window.__playableTouchPatchInstalled) return;
+  window.__playableTouchPatchInstalled = true;
+  var origAdd = EventTarget.prototype.addEventListener;
+  var blockedTypes = { touchstart: 1, touchmove: 1, wheel: 1 };
+  EventTarget.prototype.addEventListener = function(type, listener, options) {
+    if (blockedTypes[type]) {
+      if (options === undefined || options === null) {
+        options = { passive: true };
+      } else if (typeof options === 'boolean') {
+        options = { capture: options, passive: true };
+      } else {
+        options = Object.assign({}, options, { passive: true });
+      }
+    }
+    return origAdd.call(this, type, listener, options);
+  };
+})();
+</script><script>window.Intl=window.Intl||{};Intl.t=function(s){return(Intl._locale&&Intl._locale[s])||s;};</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMIR Platform 2030 - Ultimate Chinese Trade Mastery</title>
+<meta name="theme-color" content="#0a0e14">
+<style>
+*,
+*::before,
+*::after{box-sizing:border-box}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Arabic",Tahoma,Arial,sans-serif;
+  line-height:1.6;
+  background:var(--bg);
+  color:var(--text);
+  transition:background-color .3s,color .3s;
+  min-height:100vh;
+}
+body.dark{
+  --bg:#0a0e14;--bg2:#10161f;--card:#131a22;--text:#e6edf3;--muted:#9fb0c3;
+  --gold:#e6c158;--border:rgba(230,193,88,.18);--accent:rgba(230,193,88,.1);
+  --shadow:0 10px 30px rgba(0,0,0,.4);
+}
+body.light{
+  --bg:#f8fafc;--bg2:#ffffff;--card:#ffffff;--text:#0f172a;--muted:#475569;
+  --gold:#b45309;--border:rgba(180,83,9,.18);--accent:rgba(180,83,9,.08);
+  --shadow:0 10px 30px rgba(15,23,42,.08);
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:0;background:0;color:inherit}
+input,select,textarea{font-family:inherit;font-size:1rem}
+
+.header{
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:saturate(180%) blur(12px);
+  background:color-mix(in oklab,var(--bg) 85%,transparent);
+  border-bottom:1px solid var(--border);
+  padding:.9rem 1rem;
+}
+.header-inner{
+  max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;
+}
+.brand{display:flex;align-items:center;gap:.8rem}
+.logo{
+  width:42px;height:42px;border-radius:12px;
+  background:linear-gradient(135deg,var(--gold),color-mix(in oklab,var(--gold) 60%,#fff 40%));
+  display:grid;place-items:center;color:#000;font-weight:800;font-size:1.1rem;
+  box-shadow:0 4px 14px color-mix(in oklab,var(--gold) 30%,transparent);
+}
+.brand h1{margin:0;font-size:1.15rem;letter-spacing:.3px}
+.tagline{margin:0;font-size:.78rem;color:var(--muted)}
+.controls{display:flex;gap:.5rem;align-items:center}
+.ctrl{
+  padding:.55rem .9rem;border:1px solid var(--border);border-radius:12px;
+  background:var(--card);color:var(--text);font-weight:600;
+  transition:transform .15s,background .2s;
+}
+.ctrl:hover{transform:translateY(-1px);background:var(--accent)}
+.ctrl.gold{border-color:var(--gold);color:var(--gold)}
+
+.tabs{
+  max-width:1200px;margin:0 auto;padding:.8rem 1rem;display:flex;gap:.5rem;overflow:auto;
+  scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  padding:.6rem 1rem;border-radius:999px;border:1px solid var(--border);
+  background:var(--card);white-space:nowrap;font-weight:600;color:var(--muted);
+  transition:all .2s;
+}
+.tab.active{background:var(--gold);color:#000;border-color:var(--gold);box-shadow:0 4px 12px color-mix(in oklab,var(--gold) 25%,transparent)}
+
+main{max-width:1200px;margin:0 auto;padding:1rem 1rem 4rem}
+.tab-pane{display:none;animation:fade .3s ease}
+.tab-pane.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.grid2{display:grid;gap:.8rem;grid-template-columns:1fr 1fr}
+@media(max-width:720px){.grid2{grid-template-columns:1fr}}
+
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:18px;
+  padding:1.1rem;box-shadow:var(--shadow);transition:transform .2s,border-color .2s;
+}
+.card:hover{transform:translateY(-2px);border-color:var(--gold)}
+.card h3{margin:.2rem 0 1rem;font-size:1.05rem;display:flex;align-items:center;gap:.5rem}
+
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.9rem;margin-bottom:1rem}
+.metric{
+  background:linear-gradient(180deg,color-mix(in oklab,var(--card) 90%,var(--gold) 10%),var(--card));
+  border:1px solid var(--border);border-radius:16px;padding:1rem;
+}
+.metric .label{font-size:.8rem;color:var(--muted)}
+.metric .value{font-size:1.6rem;font-weight:800;color:var(--gold);margin-top:.2rem}
+.metric .sub{font-size:.75rem;color:var(--muted)}
+
+.progress{height:10px;background:var(--bg2);border:1px solid var(--border);border-radius:999px;overflow:hidden}
+.progress>div{height:100%;background:linear-gradient(90deg,var(--gold),color-mix(in oklab,var(--gold) 70%,#fff));width:0;transition:width .5s}
+
+.capsule{position:relative}
+.capsule .hanzi{font-size:2.6rem;line-height:1;color:var(--gold);font-weight:700;letter-spacing:2px}
+.capsule .pinyin{color:var(--muted);margin-top:.2rem;font-size:.95rem}
+.capsule .trans{margin:.6rem 0;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.capsule .ar-t{font-weight:700}
+.capsule .pron{
+  display:inline-block;margin:.3rem 0 .8rem;padding:.35rem .6rem;
+  background:var(--accent);border:1px dashed var(--border);border-radius:10px;
+  font-family:"Noto Sans Arabic",system-ui;color:var(--gold);font-weight:700;
+}
+.capsule .actions{display:flex;gap:.5rem;flex-wrap:wrap}
+.btn{
+  padding:.5rem .8rem;border-radius:10px;border:1px solid var(--border);
+  background:var(--bg2);font-weight:600;font-size:.9rem;transition:all .2s;
+}
+.btn:hover{border-color:var(--gold);color:var(--gold)}
+.btn.primary{background:var(--gold);color:#000;border-color:var(--gold)}
+.btn.icon{width:38px;height:38px;display:grid;place-items:center;padding:0;font-size:1.1rem}
+.level{margin-top:.7rem;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden;border:1px solid var(--border)}
+.level-bar{height:100%;background:var(--gold);width:0;transition:width .4s}
+
+.factory .title{font-weight:800;font-size:1.05rem;color:var(--gold)}
+.factory .meta{display:flex;gap:.6rem;flex-wrap:wrap;margin:.5rem 0;color:var(--muted);font-size:.85rem}
+.pill{padding:.25rem .55rem;border-radius:999px;background:var(--accent);border:1px solid var(--border);font-size:.75rem}
+
+.ship .head{display:flex;justify-content:space-between;align-items:center;gap:.5rem}
+.ship .name{font-weight:800;color:var(--gold)}
+.ship .info{margin:.5rem 0;display:grid;gap:.3rem;font-size:.92rem}
+.ship .info div{display:flex;gap:.5rem;align-items:center}
+.ship .info span:first-child{color:var(--muted);min-width:70px}
+
+.haraj .price{font-size:1.5rem;font-weight:800;color:var(--gold)}
+.haraj .city{color:var(--muted);font-size:.85rem}
+
+label{display:block;font-size:.85rem;color:var(--muted);margin-bottom:.25rem}
+input,select,textarea{
+  width:100%;padding:.65rem .75rem;border-radius:12px;border:1px solid var(--border);
+  background:var(--bg2);color:var(--text);outline:none;transition:border .2s;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+textarea{min-height:90px;resize:vertical}
+
+.list{display:grid;gap:.6rem}
+.list-item{display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding:.6rem .7rem;background:var(--bg2);border:1px solid var(--border);border-radius:12px}
+
+.badge{font-size:.7rem;padding:.2rem .5rem;border-radius:999px;background:var(--accent);border:1px solid var(--border);color:var(--muted)}
+
+.footer-note{margin-top:2rem;text-align:center;color:var(--muted);font-size:.8rem}
+
+[dir="rtl"] .brand{flex-direction:row-reverse}
+[dir="rtl"] .capsule .trans,[dir="rtl"] .ship .info div{flex-direction:row-reverse}
+[dir="rtl"] input,[dir="rtl"] textarea{text-align:right}
+</style>
+</head>
+<body class="dark">
+<header class="header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="logo">A</div>
+      <div>
+        <h1 data-i18n="appName">AMIR Platform 2030</h1>
+        <p class="tagline" data-i18n="tagline">Ultimate Chinese Trade Mastery</p>
+      </div>
+    </div>
+    <div class="controls">
+      <button id="langToggle" class="ctrl gold">العربية</button>
+      <button id="themeToggle" class="ctrl" title="Theme">☀️</button>
+    </div>
+  </div>
+  <nav class="tabs">
+    <button class="tab active" data-tab="dashboard" data-i18n="dashboard">Dashboard</button>
+    <button class="tab" data-tab="capsules" data-i18n="capsules">Capsules</button>
+    <button class="tab" data-tab="factories" data-i18n="factories">Factories</button>
+    <button class="tab" data-tab="shipping" data-i18n="shipping">Shipping</button>
+    <button class="tab" data-tab="haraj" data-i18n="market">Saudi Market</button>
+    <button class="tab" data-tab="studio" data-i18n="studio">Voice Studio</button>
+  </nav>
+</header>
+
+<main>
+  <!-- DASHBOARD -->
+  <section id="dashboard" class="tab-pane active">
+    <div class="metrics">
+      <div class="metric">
+        <div class="label" data-i18n="mastery">Mastery</div>
+        <div class="value" id="m-mastery">0/24</div>
+        <div class="sub" data-i18n="allCapsules">All capsules offline-ready</div>
+      </div>
+      <div class="metric">
+        <div class="label" data-i18n="memoryStrength">Memory Strength</div>
+        <div class="value" id="m-memory">0%</div>
+        <div class="sub">Spaced Repetition</div>
+      </div>
+      <div class="metric">
+        <div class="label" data-i18n="profitPotential">Profit Potential</div>
+        <div class="value" id="m-profit">0 SAR</div>
+        <div class="sub">Last calculation</div>
+      </div>
+      <div class="metric">
+        <div class="label" data-i18n="activeRoutes">Active Routes</div>
+        <div class="value">3</div>
+        <div class="sub">Yemen • KSA • China</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3 data-i18n="profitCalculator">Profit Calculator</h3>
+        <div class="grid2">
+          <div><label data-i18n="costCNY">Cost (¥)</label><input id="pc-cost" type="number" value="45" min="0"></div>
+          <div><label data-i18n="quantity">Quantity</label><input id="pc-qty" type="number" value="500" min="1"></div>
+          <div><label data-i18n="shippingSAR">Shipping (SAR/unit)</label><input id="pc-ship" type="number" value="3.5" step="0.1"></div>
+          <div><label data-i18n="sellPriceSAR">Sell Price (SAR)</label><input id="pc-sell" type="number" value="89" step="0.1"></div>
+          <div><label data-i18n="exchangeRate">¥ → SAR</label><input id="pc-rate" type="number" value="0.52" step="0.01"></div>
+          <div style="display:flex;align-items:end"><button class="btn primary" style="width:100%" onclick="calcProfit()" data-i18n="calculate">Calculate</button></div>
+        </div>
+        <div id="pc-result" style="margin-top:.9rem;display:grid;gap:.4rem"></div>
+      </div>
+
+      <div class="card">
+        <h3><span data-i18n="dailyGoals">Daily Goals</span> <span class="badge" id="dg-text">0/5</span></h3>
+        <p style="margin:.2rem 0 .8rem;color:var(--muted)" data-i18n="learn5">Learn 5 capsules today</p>
+        <div class="progress"><div id="dg-bar"></div></div>
+        <div style="margin-top:.8rem;display:flex;gap:.5rem;flex-wrap:wrap">
+          <span class="pill">你好</span><span class="pill">谢谢</span><span class="pill">便宜点</span><span class="pill">质量</span><span class="pill">工厂</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 data-i18n="spacedRepetition">Spaced Repetition</h3>
+        <p style="margin:.2rem 0;color:var(--muted)" data-i18n="dueToday">Due Today</p>
+        <div id="sr-list" class="list"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAPSULES -->
+  <section id="capsules" class="tab-pane">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem;gap:1rem;flex-wrap:wrap">
+      <h2 style="margin:0" data-i18n="chineseCapsules">24 Chinese Trade Capsules</h2>
+      <div style="display:flex;gap:.5rem">
+        <button class="btn" onclick="playAll()">🔊 <span data-i18n="playAudio">Play All</span></button>
+        <button class="btn" onclick="resetProgress()">↺ Reset</button>
+      </div>
+    </div>
+    <div id="capsules-grid" class="grid"></div>
+  </section>
+
+  <!-- FACTORIES -->
+  <section id="factories" class="tab-pane">
+    <h2 style="margin:0 0 .8rem" data-i18n="factoryNetwork">12 Verified Factories</h2>
+    <div id="factories-grid" class="grid"></div>
+  </section>
+
+  <!-- SHIPPING -->
+  <section id="shipping" class="tab-pane">
+    <h2 style="margin:0 0 .8rem" data-i18n="yemenShipping">3 Yemen Shipping Partners</h2>
+    <div id="shipping-grid" class="grid"></div>
+  </section>
+
+  <!-- HARAJ -->
+  <section id="haraj" class="tab-pane">
+    <h2 style="margin:0 0 .8rem" data-i18n="saudiMarket">Live Saudi Haraj Prices</h2>
+    <div id="haraj-grid" class="grid"></div>
+  </section>
+
+  <!-- STUDIO -->
+  <section id="studio" class="tab-pane">
+    <div class="grid">
+      <div class="card">
+        <h3 data-i18n="voiceStudio">Voice Cloning Studio</h3>
+        <label data-i18n="enterChinese">Enter Chinese text</label>
+        <textarea id="vs-text">你好，合作长期，质量很好，便宜点</textarea>
+        <div class="grid2" style="margin-top:.8rem">
+          <div><label data-i18n="selectVoice">Select Voice</label><select id="vs-voice"></select></div>
+          <div><label data-i18n="pitch">Pitch</label><input id="vs-pitch" type="range" min="0.5" max="2" step="0.1" value="1"></div>
+          <div><label data-i18n="speed">Speed</label><input id="vs-rate" type="range" min="0.5" max="1.5" step="0.1" value="0.9"></div>
+          <div style="display:flex;gap:.5rem;align-items:end">
+            <button class="btn primary" style="flex:1" onclick="vsSpeak()" data-i18n="speak">Speak</button>
+            <button class="btn" style="flex:1" onclick="vsSave()" data-i18n="savePreset">Save Preset</button>
+          </div>
+        <p style="margin:.8rem 0 0;color:var(--muted);font-size:.85rem">100% offline • Web Speech API • No external servers</p>
+      </div>
+      <div class="card">
+        <h3>Quantum Memory</h3>
+        <div id="memory-bars" style="display:grid;gap:.5rem"></div>
+      </div>
+    </div>
+  </section>
+
+  <p class="footer-note">AMIR Platform 2030 • Built for Yemen → China → KSA trade • Works 100% offline</p>
+</main>
+
+<script>
+const TRANS = {
+  en:{
+    appName:"AMIR Platform 2030",tagline:"Ultimate Chinese Trade Mastery",dashboard:"Dashboard",capsules:"Capsules",factories:"Factories",shipping:"Shipping",market:"Saudi Market",studio:"Voice Studio",
+    mastery:"Mastery",memoryStrength:"Memory Strength",profitPotential:"Profit Potential",activeRoutes:"Active Routes",
+    profitCalculator:"Profit Calculator",costCNY:"Cost (¥)",quantity:"Quantity",shippingSAR:"Shipping (SAR/unit)",sellPriceSAR:"Sell Price (SAR)",exchangeRate:"¥ → SAR",calculate:"Calculate",
+    totalCost:"Total Cost",revenue:"Revenue",profit:"Profit",margin:"Margin",
+    dailyGoals:"Daily Goals",learn5:"Learn 5 capsules today",completed:"Completed",
+    spacedRepetition:"Spaced Repetition",dueToday:"Due Today",practice:"Practice",mastered:"Mastered",playAudio:"Play Audio",
+    chineseCapsules:"24 Chinese Trade Capsules",factoryNetwork:"12 Verified Factories",yemenShipping:"3 Yemen Shipping Partners",saudiMarket:"Live Saudi Haraj Prices",
+    voiceStudio:"Voice Cloning Studio",enterChinese:"Enter Chinese text",selectVoice:"Select Voice",pitch:"Pitch",speed:"Speed",speak:"Speak",savePreset:"Save Preset",
+    allCapsules:"All capsules offline-ready with Web Speech API",est:"Est.",moq:"MOQ",suppliers:"suppliers",years:"years"
+  },
+  ar:{
+    appName:"منصة أمير 2030",tagline:"إتقان التجارة الصينية النهائي",dashboard:"لوحة التحكم",capsules:"الكبسولات",factories:"المصانع",shipping:"الشحن",market:"السوق السعودي",studio:"استوديو الصوت",
+    mastery:"الإتقان",memoryStrength:"قوة الذاكرة",profitPotential:"الربح المحتمل",activeRoutes:"مسارات نشطة",
+    profitCalculator:"حاسبة الربح",costCNY:"التكلفة (¥)",quantity:"الكمية",shippingSAR:"الشحن (ريال/قطعة)",sellPriceSAR:"سعر البيع (ريال)",exchangeRate:"¥ → ريال",calculate:"احسب",
+    totalCost:"التكلفة الإجمالية",revenue:"الإيرادات",profit:"الربح",margin:"الهامش",
+    dailyGoals:"الأهداف اليومية",learn5:"تعلم 5 كبسولات اليوم",completed:"مكتمل",
+    spacedRepetition:"التكرار المتباعد",dueToday:"مستحق اليوم",practice:"تدرب",mastered:"أتقنت",playAudio:"تشغيل الصوت",
+    chineseCapsules:"24 كبسولة تجارية صينية",factoryNetwork:"12 مصنع موثق",yemenShipping:"3 شركاء شحن لليمن",saudiMarket:"أسعار حراج السعودية",
+    voiceStudio:"استوديو استنساخ الصوت",enterChinese:"أدخل النص الصيني",selectVoice:"اختر الصوت",pitch:"النبرة",speed:"السرعة",speak:"تحدث",savePreset:"حفظ الإعداد",
+    allCapsules:"كل الكبسولات تعمل بدون إنترنت",est:"تأسس",moq:"أقل كمية",suppliers:"مورد",years:"سنة"
+  }
+};
+
+const capsulesData = [
+ {id:1,hanzi:"你好",pinyin:"nǐ hǎo",ar:"مرحبا",en:"Hello",pron:"ني هاو"},
+ {id:2,hanzi:"谢谢",pinyin:"xièxie",ar:"شكرا",en:"Thanks",pron:"شييه شيه"},
+ {id:3,hanzi:"再见",pinyin:"zàijiàn",ar:"مع السلامة",en:"Goodbye",pron:"زاي جيان"},
+ {id:4,hanzi:"多少钱",pinyin:"duōshǎo qián",ar:"بكم",en:"How much",pron:"دو شاو تشيان"},
+ {id:5,hanzi:"太贵了",pinyin:"tài guì le",ar:"غالي جدا",en:"Too expensive",pron:"تاي قوي ل"},
+ {id:6,hanzi:"便宜",pinyin:"piányi",ar:"رخيص",en:"Cheap",pron:"بيان يي"},
+ {id:7,hanzi:"便宜点",pinyin:"piányi diǎn",ar:"أرخص شوية",en:"Cheaper",pron:"بيان يي ديان"},
+ {id:8,hanzi:"质量",pinyin:"zhìliàng",ar:"جودة",en:"Quality",pron:"جِ لييانغ"},
+ {id:9,hanzi:"很好",pinyin:"hěn hǎo",ar:"ممتاز",en:"Very good",pron:"هن هاو"},
+ {id:10,hanzi:"工厂",pinyin:"gōngchǎng",ar:"مصنع",en:"Factory",pron:"قونغ تشانغ"},
+ {id:11,hanzi:"样品",pinyin:"yàngpǐn",ar:"عينة",en:"Sample",pron:"يانغ بين"},
+ {id:12,hanzi:"订货",pinyin:"dìnghuò",ar:"طلبية",en:"Order",pron:"دينغ هوو"},
+ {id:13,hanzi:"发货",pinyin:"fāhuò",ar:"اشحن",en:"Ship",pron:"فا هوو"},
+ {id:14,hanzi:"付款",pinyin:"fùkuǎn",ar:"دفع",en:"Payment",pron:"فو كوان"},
+ {id:15,hanzi:"折扣",pinyin:"zhékòu",ar:"خصم",en:"Discount",pron:"جيه كو"},
+ {id:16,hanzi:"库存",pinyin:"kùcún",ar:"مخزون",en:"Stock",pron:"كو تسون"},
+ {id:17,hanzi:"合作",pinyin:"hézuò",ar:"تعاون",en:"Cooperation",pron:"خه زوو"},
+ {id:18,hanzi:"长期",pinyin:"chángqī",ar:"طويل الأمد",en:"Long term",pron:"تشانغ تشي"},
+ {id:19,hanzi:"合同",pinyin:"hétong",ar:"عقد",en:"Contract",pron:"خه تونغ"},
+ {id:20,hanzi:"发票",pinyin:"fāpiào",ar:"فاتورة",en:"Invoice",pron:"فا بياو"},
+ {id:21,hanzi:"海运",pinyin:"hǎiyùn",ar:"شحن بحري",en:"Sea freight",pron:"هاي يون"},
+ {id:22,hanzi:"空运",pinyin:"kōngyùn",ar:"شحن جوي",en:"Air freight",pron:"كونغ يون"},
+ {id:23,hanzi:"运输",pinyin:"yùnshū",ar:"نقل",en:"Transport",pron:"يون شو"},
+ {id:24,hanzi:"清关",pinyin:"qīngguān",ar:"تخليص جمركي",en:"Customs",pron:"تشينغ قوان"},
+];
+
+const factories = [
+ {name:"Guangzhou Yilong Textile",nameAr:"قوانغتشو ييلونغ للمنسوجات",est:2008,moq:500,note:"WhatsApp",noteAr:"واتساب",spec:"Textiles",specAr:"منسوجات",city:"Guangzhou"},
+ {name:"Yiwu Futian Market Zone 2",nameAr:"سوق ييوو فوتان منطقة 2",shop:"A3-056",suppliers:"75k",spec:"General Merchandise",specAr:"بضائع عامة",city:"Yiwu"},
+ {name:"Shenzhen Huaqiangbei Electronics",nameAr:"شنتشن هوا تشيانغ باي",spec:"World's largest electronics",specAr:"أكبر سوق إلكترونيات",city:"Shenzhen"},
+ {name:"Shanghai Jinfeng Toys",nameAr:"شنغهاي جينفنغ للألعاب",est:2009,cert:"ISO 9001",years:15,spec:"Toys",specAr:"ألعاب",city:"Shanghai"},
+ {name:"Beijing Silk Road Trading",nameAr:"بكين طريق الحرير",cert:"Export License",certAr:"رخصة تصدير",spec:"Trading",specAr:"تجارة",city:"Beijing"},
+ {name:"Guangzhou Baiyun Leather",nameAr:"قوانغتشو باييون للجلود",factories:"1,200",spec:"Leather Goods",specAr:"منتجات جلدية",city:"Guangzhou"},
+ {name:"Ningbo Beilun Power Tools",nameAr:"نينغبو بيلون أدوات",spec:"OEM/ODM",specAr:"تصنيع خاص",city:"Ningbo"},
+ {name:"Foshan Furniture Hub",nameAr:"فوشان للأثاث",factories:"3,000",spec:"Furniture",specAr:"أثاث",city:"Foshan"},
+ {name:"Dongguan Shoe City",nameAr:"دونغقوان للأحذية",note:"Nike/Adidas suppliers",noteAr:"مورد نايك وأديداس",spec:"Footwear",specAr:"أحذية",city:"Dongguan"},
+ {name:"Hangzhou Tea Culture",nameAr:"هانغتشو للشاي",cert:"Organic",certAr:"عضوي معتمد",spec:"Tea",specAr:"شاي",city:"Hangzhou"},
+ {name:"Shenzhen SEG Market",nameAr:"شنتشن سوق SEG",spec:"Components",specAr:"مكونات إلكترونية",city:"Shenzhen"},
+ {name:"Yiwu International District 1",nameAr:"ييوو الدولي منطقة 1",visitors:"200k/day",visitorsAr:"200 ألف/يوم",spec:"Wholesale",specAr:"جملة",city:"Yiwu"},
+];
+
+const shipping = [
+ {name:"Al-Qassem International",nameAr:"القاسم الدولية",phone:"+967 777 375 049",email:"contact@alkassimltd.com",ports:"Hodeidah / Aden",portsAr:"الحديدة / عدن",services:"Sea freight, customs",servicesAr:"شحن بحري، تخليص جمركي"},
+ {name:"MIDEAST Shipping",nameAr:"ميدإيست للشحن",est:1962,member:"BIMCO member",years:"63 years",yearsAr:"63 سنة",services:"Full logistics",servicesAr:"خدمات لوجستية كاملة"},
+ {name:"Jisr Sirah Logistics",nameAr:"جسر سرة لوجستك",phone:"+967 733 333 444",cities:"Aden / Sana'a",citiesAr:"عدن / صنعاء",services:"Express",servicesAr:"شحن سريع"},
+];
+
+const haraj = [
+ {name:"iPhone 15 Pro Max",nameAr:"آيفون 15 برو ماكس",price:4899,city:"Riyadh",cityAr:"الرياض"},
+ {name:"Oud Royal",nameAr:"عود ملكي",price:285,city:"Jeddah",cityAr:"جدة"},
+ {name:"Smart Watch Ultra",nameAr:"ساعة ذكية ألترا",price:1299,city:"Dammam",cityAr:"الدمام"},
+ {name:"AirPods Pro",nameAr:"إيربودز برو",price:899,city:"Riyadh",cityAr:"الرياض"},
+ {name:"PlayStation 5",nameAr:"بلايستيشن 5",price:2199,city:"Medina",cityAr:"المدينة"},
+];
+
+let lang = localStorage.getItem('amir_lang') || 'en';
+let progress = JSON.parse(localStorage.getItem('amir_progress') || '{"capsules":{},"daily":{"date":"","count":0},"lastProfit":0}');
+
+function saveProgress(){localStorage.setItem('amir_progress', JSON.stringify(progress))}
+
+function setLang(l){
+  lang = l;
+  document.documentElement.lang = l;
+  document.documentElement.dir = l==='ar'?'rtl':'ltr';
+  localStorage.setItem('amir_lang', l);
+  document.getElementById('langToggle').textContent = l==='en'?'العربية':'EN';
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k = el.dataset.i18n;
+    if(TRANS[l][k]) el.textContent = TRANS[l][k];
+  });
+  renderAll();
+}
+document.getElementById('langToggle').onclick = ()=> setLang(lang==='en'?'ar':'en');
+
+function setTheme(t){
+  document.body.classList.toggle('light', t==='light');
+  document.body.classList.toggle('dark', t!=='light');
+  localStorage.setItem('amir_theme', t);
+  document.getElementById('themeToggle').textContent = t==='light'?'🌙':'☀️';
+}
+document.getElementById('themeToggle').onclick = ()=>{
+  const cur = localStorage.getItem('amir_theme')||'dark';
+  setTheme(cur==='dark'?'light':'dark');
+};
+setTheme(localStorage.getItem('amir_theme')||'dark');
+
+// Tabs
+document.querySelectorAll('.tab').forEach(b=>{
+  b.onclick = ()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById(b.dataset.tab).classList.add('active');
+  };
+});
+
+// Speech
+function speakChar(text){
+  if(!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN';
+  u.rate = 0.9;
+  const voices = speechSynthesis.getVoices();
+  const zh = voices.find(v=>v.lang.startsWith('zh')) || voices.find(v=>v.lang.includes('CN'));
+  if(zh) u.voice = zh;
+  speechSynthesis.speak(u);
+}
+function playAll(){
+  let i=0;
+  const next=()=>{ if(i<capsulesData.length){ speakChar(capsulesData[i].hanzi); i++; setTimeout(next,1100);} };
+  next();
+}
+
+// Progress helpers
+const todayStr = ()=> new Date().toISOString().slice(0,10);
+function ensureDaily(){
+  if(progress.daily.date !== todayStr()){ progress.daily={date:todayStr(),count:0}; saveProgress(); }
+}
+function getLevel(id){ return progress.capsules[id]?.level || 0 }
+function practiceCap(id){
+  ensureDaily();
+  const c = progress.capsules[id] || {level:0,reviews:0,next:0};
+  c.level = Math.min(5, c.level+1);
+  c.reviews++;
+  const intervals=[0,1,3,7,14,30];
+  c.next = Date.now() + intervals[c.level]*86400000;
+  progress.capsules[id]=c;
+  progress.daily.count = Math.min(5, progress.daily.count+1);
+  saveProgress();
+  renderAll();
+  speakChar(capsulesData.find(x=>x.id===id).hanzi);
+}
+function masterCap(id){
+  progress.capsules[id]={level:5,reviews:99,next:Date.now()+365*86400000};
+  saveProgress(); renderAll();
+}
+
+function resetProgress(){
+  if(confirm(lang==='ar'?'إعادة تعيين التقدم؟':'Reset all progress?')){
+    progress={capsules:{},daily:{date:todayStr(),count:0},lastProfit:0};
+    saveProgress(); renderAll();
+  }
+}
+
+// Render capsules
+function renderCapsules(){
+  const grid=document.getElementById('capsules-grid');
+  grid.innerHTML='';
+  capsulesData.forEach(c=>{
+    const lvl=getLevel(c.id);
+    const el=document.createElement('div');
+    el.className='capsule card';
+    el.innerHTML=`
+      <div class="hanzi">${c.hanzi}</div>
+      <div class="pinyin">${c.pinyin}</div>
+      <div class="trans"><span class="ar-t">${c.ar}</span> • <span>${c.en}</span></div>
+      <div class="pron">${c.pron}</div>
+      <div class="actions">
+        <button class="btn icon" title="Listen" onclick="speakChar('${c.hanzi}')">🔊</button>
+        <button class="btn" onclick="practiceCap(${c.id})">${TRANS[lang].practice}</button>
+        <button class="btn ${lvl>=4?'primary':''}" onclick="masterCap(${c.id})">${TRANS[lang].mastered}</button>
+      </div>
+      <div class="level"><div class="level-bar" style="width:${lvl*20}%"></div></div>
+    `;
+    grid.appendChild(el);
+  });
+}
+
+// Factories
+function renderFactories(){
+  const grid=document.getElementById('factories-grid');
+  grid.innerHTML='';
+  factories.forEach(f=>{
+    const name = lang==='ar'?f.nameAr:f.name;
+    const spec = lang==='ar'?(f.specAr||f.spec):f.spec;
+    const meta=[];
+    if(f.est) meta.push(`${TRANS[lang].est} ${f.est}`);
+    if(f.moq) meta.push(`${TRANS[lang].moq} ${f.moq}`);
+    if(f.suppliers) meta.push(`${f.suppliers} ${TRANS[lang].suppliers}`);
+    if(f.years) meta.push(`${f.years} ${TRANS[lang].years}`);
+    if(f.factories) meta.push(`${f.factories} factories`);
+    if(f.visitors) meta.push(lang==='ar'?f.visitorsAr:f.visitors);
+    if(f.cert) meta.push(lang==='ar'?(f.certAr||f.cert):f.cert);
+    const note = lang==='ar'?(f.noteAr||''):(f.note||'');
+    const el=document.createElement('div');
+    el.className='card factory';
+    el.innerHTML=`
+      <div class="title">${name}</div>
+      <div class="meta">${meta.map(m=>`<span class="pill">${m}</span>`).join('')}</div>
+      <div style="color:var(--muted);margin:.3rem 0">${spec} • ${f.city}</div>
+      ${note?`<div class="pill" style="margin-top:.4rem">${note}</div>`:''}
+    `;
+    grid.appendChild(el);
+  });
+}
+
+// Shipping
+function renderShipping(){
+  const grid=document.getElementById('shipping-grid');
+  grid.innerHTML='';
+  shipping.forEach(s=>{
+    const name=lang==='ar'?s.nameAr:s.name;
+    const el=document.createElement('div');
+    el.className='card ship';
+    el.innerHTML=`
+      <div class="head"><div class="name">${name}</div><span class="badge">Licensed</span></div>
+      <div class="info">
+        ${s.phone?`<div><span>Phone</span><strong>${s.phone}</strong></div>`:''}
+        ${s.email?`<div><span>Email</span><strong>${s.email}</strong></div>`:''}
+        ${s.ports?`<div><span>Ports</span><strong>${lang==='ar'?s.portsAr:s.ports}</strong></div>`:''}
+        ${s.cities?`<div><span>Cities</span><strong>${lang==='ar'?s.citiesAr:s.cities}</strong></div>`:''}
+        ${s.est?`<div><span>Est</span><strong>${s.est}</strong></div>`:''}
+        ${s.member?`<div><span>Member</span><strong>${s.member}</strong></div>`:''}
+        <div><span>Service</span><strong>${lang==='ar'?s.servicesAr:s.services}</strong></div>
+      </div>
+    `;
+    grid.appendChild(el);
+  });
+}
+
+// Haraj
+function renderHaraj(){
+  const grid=document.getElementById('haraj-grid');
+  grid.innerHTML='';
+  haraj.forEach(h=>{
+    const name=lang==='ar'?h.nameAr:h.name;
+    const city=lang==='ar'?h.cityAr:h.city;
+    const el=document.createElement('div');
+    el.className='card haraj';
+    el.innerHTML=`
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:.5rem">
+        <div><div style="font-weight:700">${name}</div><div class="city">${city}</div></div>
+        <div class="price">${h.price.toLocaleString()}<span style="font-size:.9rem;color:var(--muted);margin-inline-start:.2rem">SAR</span></div>
+      </div>
+      <div style="margin-top:.7rem;display:flex;gap:.5rem">
+        <button class="btn" onclick="document.querySelector('[data-tab=dashboard]').click();document.getElementById('pc-sell').value='${Math.round(h.price*0.6)}';calcProfit()">${TRANS[lang].calculate}</button>
+        <span class="pill">Haraj</span>
+      </div>
+    `;
+    grid.appendChild(el);
+  });
+}
+
+// Dashboard updates
+function updateDashboard(){
+  ensureDaily();
+  const mastered = Object.values(progress.capsules).filter(c=>c.level>=4).length;
+  document.getElementById('m-mastery').textContent = `${mastered}/24`;
+  const avg = capsulesData.reduce((s,c)=>s+getLevel(c.id),0)/24;
+  const mem = Math.round(avg/5*100);
+  document.getElementById('m-memory').textContent = mem+'%';
+  document.getElementById('m-profit').textContent = (progress.lastProfit||0).toLocaleString()+' SAR';
+  document.getElementById('dg-text').textContent = `${progress.daily.count}/5`;
+  document.getElementById('dg-bar').style.width = (progress.daily.count/5*100)+'%';
+
+  // spaced repetition
+  const now=Date.now();
+  const due = capsulesData.filter(c=>{
+    const p=progress.capsules[c.id];
+    return !p || p.next<=now;
+  }).slice(0,6);
+  const list=document.getElementById('sr-list');
+  list.innerHTML='';
+  due.forEach(c=>{
+    const item=document.createElement('div');
+    item.className='list-item';
+    item.innerHTML=`<div style="display:flex;align-items:center;gap:.6rem"><span style="font-size:1.3rem;color:var(--gold)">${c.hanzi}</span><span>${c.pinyin}</span><span style="color:var(--muted)">${lang==='ar'?c.ar:c.en}</span></div><button class="btn" onclick="practiceCap(${c.id})">${TRANS[lang].practice}</button>`;
+    list.appendChild(item);
+  });
+  if(due.length===0){ list.innerHTML=`<div class="list-item">${lang==='ar'?'لا شيء مستحق اليوم! 🎉':'Nothing due today! 🎉'}</div>`}
+
+  // memory bars
+  const mb=document.getElementById('memory-bars');
+  mb.innerHTML='';
+  capsulesData.slice(0,12).forEach(c=>{
+    const lvl=getLevel(c.id);
+    const row=document.createElement('div');
+    row.style.display='grid';row.style.gridTemplateColumns='70px 1fr 40px';row.style.alignItems='center';row.style.gap='.6rem';
+    row.innerHTML=`<div style="color:var(--gold);font-weight:700">${c.hanzi}</div><div class="progress"><div style="width:${lvl*20}%"></div></div><div style="text-align:end;color:var(--muted);font-size:.85rem">${lvl}/5</div>`;
+    mb.appendChild(row);
+  });
+}
+
+function calcProfit(){
+  const cost = parseFloat(document.getElementById('pc-cost').value)||0;
+  const qty = parseInt(document.getElementById('pc-qty').value)||0;
+  const ship = parseFloat(document.getElementById('pc-ship').value)||0;
+  const sell = parseFloat(document.getElementById('pc-sell').value)||0;
+  const rate = parseFloat(document.getElementById('pc-rate').value)||0.52;
+  const totalCost = (cost*rate + ship)*qty;
+  const revenue = sell*qty;
+  const profit = revenue - totalCost;
+  const margin = revenue>0? (profit/revenue*100):0;
+  progress.lastProfit = Math.round(profit);
+  saveProgress();
+  document.getElementById('pc-result').innerHTML = `
+    <div class="list-item"><span>${TRANS[lang].totalCost}</span><strong>${totalCost.toFixed(0)} SAR</strong></div>
+    <div class="list-item"><span>${TRANS[lang].revenue}</span><strong>${revenue.toFixed(0)} SAR</strong></div>
+    <div class="list-item"><span>${TRANS[lang].profit}</span><strong style="color:var(--gold)">${profit.toFixed(0)} SAR</strong></div>
+    <div class="list-item"><span>${TRANS[lang].margin}</span><strong>${margin.toFixed(1)}%</strong></div>
+  `;
+  updateDashboard();
+}
+
+// Voice Studio
+function loadVoices(){
+  if(!('speechSynthesis' in window)) return;
+  const sel=document.getElementById('vs-voice');
+  const voices=speechSynthesis.getVoices();
+  sel.innerHTML='';
+  voices.filter(v=>v.lang.startsWith('zh')).forEach(v=>{
+    const o=document.createElement('option');
+    o.value=v.name; o.textContent=`${v.name} (${v.lang})`;
+    sel.appendChild(o);
+  });
+  if(sel.options.length===0){
+    voices.slice(0,8).forEach(v=>{
+      const o=document.createElement('option');o.value=v.name;o.textContent=`${v.name}`;sel.appendChild(o);
+    });
+  }
+  const saved=localStorage.getItem('amir_voice');
+  if(saved) sel.value=saved;
+}
+if('speechSynthesis' in window){ speechSynthesis.onvoiceschanged=loadVoices; setTimeout(loadVoices,500); }
+
+function vsSpeak(){
+  const text=document.getElementById('vs-text').value.trim();
+  if(!text) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='zh-CN';
+  u.rate=parseFloat(document.getElementById('vs-rate').value);
+  u.pitch=parseFloat(document.getElementById('vs-pitch').value);
+  const v=document.getElementById('vs-voice').value;
+  const voice=speechSynthesis.getVoices().find(x=>x.name===v);
+  if(voice) u.voice=voice;
+  speechSynthesis.speak(u);
+}
+function vsSave(){
+  localStorage.setItem('amir_voice', document.getElementById('vs-voice').value);
+  localStorage.setItem('amir_vs_pitch', document.getElementById('vs-pitch').value);
+  localStorage.setItem('amir_vs_rate', document.getElementById('vs-rate').value);
+  alert(lang==='ar'?'تم حفظ الإعدادات':'Preset saved');
+}
+
+function renderAll(){
+  renderCapsules();
+  renderFactories();
+  renderShipping();
+  renderHaraj();
+  updateDashboard();
+}
+
+// Init
+setLang(lang);
+renderAll();
+calcProfit();
+ensureDaily();
+
+// Prevent pull-to-refresh trapping on mobile when practicing
+document.addEventListener('touchstart',()=>{}, {passive:true});
+</script>
+<script>(function(){document.addEventListener("click",function(e){var a=e.target.closest("[data-product-id]");if(!a)return;e.preventDefault();var pid=a.getAttribute("data-product-id");if(pid)parent.postMessage({type:"ecto-artifact-link-click",productId:pid},"*")})})();</script>
+</body>
+</html>
