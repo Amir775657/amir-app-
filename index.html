@@ -800,6 +800,251 @@ function toggleTheme(){
   document.getElementById('themeBtn').textContent=currentTheme==='dark'?'🌙':'☀️';
   showToast(currentTheme==='dark'?'🌙 وضع ليلي مريح':'☀️ وضع نهاري واضح');
 }
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#08080A">
+<title>طريق الأمير 👑</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Noto+Sans+SC:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0E0E13;
+  --bg-e:#181822;
+  --card:#1E1E2E;
+  --border:#2E2E40;
+  --text:#F9F9FB;
+  --text-2:#A8A9B8;
+  --text-3:#7A7B8C;
+  --gold:#FFD84D;
+  --gold2:#FFC61A;
+  --gold-bg:rgba(255,216,77,0.08);
+  --gold-bd:rgba(255,216,77,0.22);
+  --r-xl:20px;
+  --r-pill:100px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
+.app{max-width:440px;margin:0 auto;padding:16px;min-height:100vh;padding-bottom:40px}
+
+/* الهيدر الرئيسي */
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.h-brand{display:flex;align-items:center;gap:10px}
+.h-logo{width:38px;height:38px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#000;font-size:18px}
+.h-title{font-size:16px;font-weight:900;color:#fff}
+.h-sub{font-size:10px;color:var(--text-2)}
+
+/* التبويب الرئيسي */
+.main-tabs{display:flex;gap:8px;margin-bottom:16px;background:var(--bg-e);padding:4px;border-radius:14px;border:1px solid var(--border)}
+.tab-btn{flex:1;padding:10px;border:none;border-radius:10px;color:var(--text-2);font-weight:800;font-size:12px;cursor:pointer;text-align:center;background:transparent;transition:all .2s}
+.tab-btn.active{background:var(--gold);color:#000}
+
+.section-page{display:none}
+.section-page.active{display:block;animation:fadeIn .25s ease}
+
+/* قسم التحدي اللساني */
+.challenge-box{background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:18px;margin-bottom:16px}
+.ch-header{text-align:center;margin-bottom:14px}
+.ch-title{color:var(--gold);font-size:15px;font-weight:800}
+.ch-desc{font-size:11px;color:var(--text-2);margin-top:2px}
+
+.words-list{display:grid;gap:8px;margin:12px 0}
+.word-item{background:var(--bg-e);border:1px solid var(--border);border-radius:12px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between}
+.word-cn{font-size:16px;font-weight:700;color:#fff;font-family:'Noto Sans SC',sans-serif}
+.word-py{font-size:10px;color:var(--gold);margin-top:2px}
+.word-ar{font-size:12px;font-weight:700;color:var(--text)}
+
+/* استشهاد أمهات الكتب المطوي */
+.quote-toggle{background:none;border:none;color:var(--text-3);font-size:10px;font-weight:700;cursor:pointer;margin-top:6px;display:inline-flex;align-items:center;gap:4px}
+.quote-toggle:hover{color:var(--gold)}
+.quote-content{display:none;background:var(--gold-bg);border-right:3px solid var(--gold);padding:8px 10px;border-radius:4px 8px 8px 4px;margin-top:6px;font-size:10.5px;color:#EAEAEA}
+.quote-content.show{display:block}
+
+/* نموذج الإرسال */
+.form-group{margin-top:10px}
+.form-group label{font-size:10.5px;color:var(--text-2);margin-bottom:4px;display:block;font-weight:700}
+.form-group input{width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:var(--bg-e);color:#fff;font-size:12px;outline:none}
+.btn-submit{width:100%;margin-top:14px;background:linear-gradient(90deg,var(--gold),var(--gold2));color:#000;border:none;padding:12px;border-radius:12px;font-weight:900;font-size:13px;cursor:pointer}
+
+/* بطاقات أمهات الكتب */
+.book-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:16px;margin-bottom:12px}
+.book-badge{display:inline-block;padding:3px 8px;background:var(--gold-bg);border:1px solid var(--gold-bd);border-radius:6px;font-size:9.5px;color:var(--gold);font-weight:800;margin-bottom:8px}
+.book-title{font-size:14px;font-weight:800;color:#fff}
+.book-author{font-size:10.5px;color:var(--text-3);margin-bottom:8px}
+.book-text{font-size:11.5px;color:var(--text-2);line-height:1.5;margin-bottom:10px}
+.gold-quote{background:rgba(0,0,0,0.3);border-right:3px solid var(--gold);padding:8px 10px;border-radius:4px 8px 8px 4px;font-size:11px;color:#EAEAEA;font-style:italic}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- الهيدر -->
+  <div class="header">
+    <div class="h-brand">
+      <div class="h-logo">ع</div>
+      <div>
+        <div class="h-title">طريق الأمير 👑</div>
+        <div class="h-sub">التحدي اللساني وأمهات الكتب</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- التبويب الأحدب -->
+  <div class="main-tabs">
+    <button class="tab-btn active" onclick="switchTab('challenge')">🎙️ التحدي اللساني</button>
+    <button class="tab-btn" onclick="switchTab('books')">📜 أمهات الكتب</button>
+  </div>
+
+  <!-- الصفحة الأولى: التحدي اللساني -->
+  <div id="page-challenge" class="section-page active">
+    <div class="challenge-box">
+      <div class="ch-header">
+        <div class="ch-title">🎙️ التحدي اللساني الثلاثي (AR➔EN➔ZH)</div>
+        <div class="ch-desc">سجّل مقطع فيديو أو صوت واحد ناطقاً الكلمات بالترتيب</div>
+      </div>
+
+      <div class="words-list" id="challengeWords"></div>
+
+      <div class="form-group">
+        <label>الاسم الكامل 📝</label>
+        <input type="text" id="userName" value="امير محمد حسن غالب السعيدي">
+      </div>
+      <div class="form-group">
+        <label>رابط فيديو أو صوت التحدي 🎬</label>
+        <input type="url" id="mediaLink" placeholder="ضع رابط Google Drive أو YouTube">
+      </div>
+
+      <button class="btn-submit" onclick="submitChallenge()">إرسال التحدي للمراجعة 🚀</button>
+    </div>
+  </div>
+
+  <!-- الصفحة الثانية: أمهات الكتب -->
+  <div id="page-books" class="section-page">
+    <div id="booksContainer"></div>
+  </div>
+</div>
+
+<script>
+// البيانات الثابتة للمفردات مع الشواهد
+const challengeData = [
+  { cn: "最低价", py: "zuì dī jià", ar: "أقل سعر", quote: "«أكرمُ التجارةِ ما قامَ على الصِّدقِ وخَفّت فيه المؤونة.» — البخلاء" },
+  { cn: "订金", py: "dìng jīn", ar: "عربون", quote: "«العُقودُ وَثاقُ العُهودِ، وَبِها تَسْتَقِيمُ أَمْوَالُ النَّاسِ.» — ابن خلدون" },
+  { cn: "工厂", py: "gōng chǎng", ar: "مصنع", quote: "«مَن أَمْضَى يَوْمَهُ فِي غَيْرِ حَقٍّ قَضَاهُ، فَقَدْ ظَلَمَ يَوْمَهُ.» — صيد الخاطر" },
+  { cn: "样品", py: "yàng pǐn", ar: "عينة", quote: "«الدليلُ الصغيرُ يَدُلُّ على الكَثيرِ المَسْتُورِ.» — ابن المقفع" },
+  { cn: "海运", py: "hǎi yùn", ar: "شحن بحري", quote: "«تَجْرِي الرِّيَاحُ بِمَا لا تَشْتَهِي السُّفُنُ.» — المتنبي" }
+];
+
+// مقالات أمهات الكتب
+const booksData = [
+  {
+    tag: "صناعة الفكر والإدارة",
+    title: "مقدمة ابن خلدون",
+    author: "المؤلف: ابن خلدون",
+    summary: "المرجع التأسيسي الأول لعلم الاجتماع وبناء الدول، مبيناً ارتباط الاقتصاد بالتنظيم البشري.",
+    quote: "«إنّ الخَرابَ يَسْتَوْلِي عَلَى المَمالِكِ إذَا قَلَّ العَمَرُ وَانْقَطَعَ التَّجَارُ.»"
+  },
+  {
+    tag: "المال والاقتصاد",
+    title: "ثروة الأمم",
+    author: "المؤلف: آدم سميث",
+    summary: "الكتاب المحوري في تشكيل أسس حركة التجارة العالمية والأسواق الحديثة وتوزيع العمل.",
+    quote: "«تتكون ثروة الأمم الحقيقية من الإنتاج والتبادل الحر المنظم.»"
+  },
+  {
+    tag: "النفس والقيادة",
+    title: "صيد الخاطر",
+    author: "المؤلف: ابن الجوزي",
+    summary: "مجموعة تأملات مركزة تُعنى بإدارة الذات والانضباط واستغلال الوقت وبناء شخصية المكتسب.",
+    quote: "«من فكّر في عواقب الأمور، سلِم من المزالق، وبنى أمره على الحكمة.»"
+  }
+];
+
+// التنقل بين الصفحات
+function switchTab(tab){
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.section-page').forEach(p => p.classList.remove('active'));
+  
+  if(tab === 'challenge'){
+    event.target.classList.add('active');
+    document.getElementById('page-challenge').classList.add('active');
+  } else {
+    event.target.classList.add('active');
+    document.getElementById('page-books').classList.add('active');
+  }
+}
+
+// عرض كلمات التحدي
+function renderChallenge(){
+  const container = document.getElementById('challengeWords');
+  let html = '';
+  challengeData.forEach((item, index) => {
+    html += `
+      <div class="word-item-wrap">
+        <div class="word-item">
+          <div>
+            <div class="word-cn">${item.cn}</div>
+            <div class="word-py">${item.py}</div>
+          </div>
+          <div style="text-align:left">
+            <div class="word-ar">${item.ar}</div>
+            <button class="quote-toggle" onclick="toggleQuote(${index})">📜 شاهد ▾</button>
+          </div>
+        </div>
+        <div class="quote-content" id="quote-${index}">${item.quote}</div>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+// فتح وإغلاق الشاهد
+function toggleQuote(id){
+  const el = document.getElementById(`quote-${id}`);
+  el.classList.toggle('show');
+}
+
+// عرض أمهات الكتب
+function renderBooks(){
+  const container = document.getElementById('booksContainer');
+  let html = '';
+  booksData.forEach(item => {
+    html += `
+      <div class="book-card">
+        <span class="book-badge">${item.tag}</span>
+        <div class="book-title">${item.title}</div>
+        <div class="book-author">${item.author}</div>
+        <div class="book-text">${item.summary}</div>
+        <div class="gold-quote">💡 ${item.quote}</div>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+function submitChallenge(){
+  const link = document.getElementById('mediaLink').value;
+  if(!link){ alert('يرجى وضع رابط الفيديو أو المقطع الصوتي'); return; }
+  alert('تم إرسال التحدي بنجاح!');
+}
+
+// التشغيل الأولي
+renderChallenge();
+renderBooks();
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+  
 
 // دالة تحديث اسم الشهادة بحذر تام
 function updateCertName(v){
