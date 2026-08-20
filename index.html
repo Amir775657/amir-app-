@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة طريق الأمير | Tareeq Al-Ameer</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #151d2a;
+            --accent-yellow: #f59e0b;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --border-color: #273549;
+            --cert-gold: #d97706;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .brand {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent-yellow);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .word-display {
+            text-align: center;
+            padding: 16px;
+            background: #090d16;
+            border-radius: 12px;
+        }
+
+        .word-main {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .word-sub {
+            color: var(--text-sub);
+            font-size: 0.9rem;
+        }
+
+        .media-container {
+            position: relative;
+            width: 100%;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        video {
+            width: 100%;
+            display: block;
+        }
+
+        .timer-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.85);
+            color: var(--accent-yellow);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-family: monospace;
+            border: 1px solid var(--accent-yellow);
+            z-index: 10;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--accent-yellow);
+            color: #000;
+        }
+
+        .cert-lock-card {
+            background: #090d16;
+            border: 1px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .certificate-card {
+            display: none;
+            background: linear-gradient(135deg, #ffffff 0%, #fef3c7 100%);
+            color: #1e293b;
+            border: 8px double var(--cert-gold);
+            border-radius: 12px;
+            padding: 24px 16px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .cert-header {
+            color: var(--cert-gold);
+            font-size: 1.3rem;
+            font-weight: 800;
+        }
+
+        .cert-subheader {
+            font-size: 0.75rem;
+            color: #64748b;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .cert-badge {
+            width: 50px;
+            height: 50px;
+            background: var(--cert-gold);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px auto;
+            font-size: 1.5rem;
+        }
+
+        .cert-body {
+            font-size: 0.9rem;
+            margin: 12px 0;
+            line-height: 1.6;
+        }
+
+        .cert-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-bottom: 2px solid var(--cert-gold);
+            display: inline-block;
+            padding: 0 20px 4px 20px;
+            margin: 6px 0;
+            color: #0f172a;
+        }
+
+        .cert-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: #475569;
+            margin-top: 16px;
+            border-top: 1px solid #cbd5e1;
+            padding-top: 8px;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background: var(--border-color);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-yellow);
+            width: 75%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="brand">طريق الأمير 👑</div>
+        <div>المستوى 3 • <span id="userXP">231</span> XP</div>
+    </div>
+
+    <div class="card">
+        <div class="word-display">
+            <div class="word-main" id="targetWord">مرحبا</div>
+            <div class="word-sub">Hello • 你好</div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="speakText('Hello', 'en-US')">🔊 نطق إنجليزي</button>
+            <button class="btn btn-primary" onclick="speakText('你好', 'zh-CN')">🔊 نطق صيني</button>
+        </div>
+
+        <div class="media-container">
+            <div class="timer-badge" id="videoTimer">00:00 / 00:00</div>
+            <video id="mainVideo" controls>
+                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                المتصفح لا يدعم التشغيل.
+            </video>
+        </div>
+
+        <div class="card" style="background: #090d16; padding: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span>التسجيل الصوتي الميداني</span>
+                <span id="recordTimer" style="color: #ef4444; font-family: monospace; font-weight: bold;">00:00</span>
+            </div>
+            <div class="btn-group" style="margin-top: 8px;">
+                <button class="btn btn-primary" id="recBtn" onclick="toggleRecording()">🎤 بدء التسجيل التطبيقي</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="cert-lock-card" id="certLocked">
+            <div style="font-size: 2rem;">🔒</div>
+            <h4 style="margin: 8px 0 4px 0; color: var(--accent-yellow);">شهادة اعتماد الكفاءة اللغوية والتطبيقية</h4>
+            <p style="font-size: 0.8rem; color: var(--text-sub); margin: 0 0 10px 0;">
+                شروط الحصول على الشهادة المعتمدة من **منصة طريق الأمير**:
+            </p>
+            <div style="text-align: right; font-size: 0.8rem; color: var(--text-sub); line-height: 1.8;">
+                ✔ تسجيل الكبسولة الصوتية الميدانية <br>
+                ✖ الوصول إلى 300 XP (متبقي 69 XP) <br>
+                ✖ اجتياز التحدي الميداني اللوجستي
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <button class="btn btn-primary" style="margin-top: 12px; width: 100%;" onclick="unlockCertificateMock()">
+                ⚡ إكمال التحدي الميداني لفتح الشهادة
+            </button>
+        </div>
+
+        <div class="certificate-card" id="certUnlocked">
+            <div class="cert-badge">👑</div>
+            <div class="cert-header">شهادة اعتماد كفاءة ميدانية</div>
+            <div class="cert-subheader">TAREEQ AL-AMEER OFFICIAL CERTIFICATE</div>
+            
+            <div class="cert-body">
+                تشهد **منصة طريق الأمير** بالتنسيق مع الجهات الشريكة بأن المتدرب/ة:
+                <br>
+                <div class="cert-name">اسم المتدرب</div>
+                <br>
+                قد أتم بنجاح كافة الكبسولات اللغوية والتطبيق العملي الميداني بدرجة **ممتاز**.
+            </div>
+
+            <div class="cert-footer">
+                <span>الرمز المؤسسي: TA-2026-5978</span>
+                <span>الموثق: منصة طريق الأمير</span>
+                <span>التاريخ: 2026-08-20</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // محرك النطق الصوتي المطور للغة الصينية والإنجليزية
+    function speakText(text, lang) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            
+            const msg = new SpeechSynthesisUtterance(text);
+            
+            if (lang === 'zh-CN' || lang === 'zh') {
+                msg.lang = 'zh-CN';
+                msg.rate = 0.75; // إبطاء السرعة لضبط النبرات الصينية
+                msg.pitch = 1.0;
+            } else {
+                msg.lang = lang;
+                msg.rate = 0.85;
+            }
+
+            window.speechSynthesis.speak(msg);
+        } else {
+            alert('خاصية النطق الصوتي غير مدعومة في هذا المتصفح.');
+        }
+    }
+
+    // عداد الفيديو
+    const video = document.getElementById('mainVideo');
+    const videoTimer = document.getElementById('videoTimer');
+
+    function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    video.addEventListener('timeupdate', () => {
+        const current = formatTime(video.currentTime);
+        const total = formatTime(video.duration || 0);
+        videoTimer.innerText = `${current} / ${total}`;
+    });
+
+    // عداد التسجيل الصوتي
+    let mediaRecorder;
+    let audioChunks = [];
+    let isRecording = false;
+    let recordInterval;
+    let secondsRecorded = 0;
+
+    const recBtn = document.getElementById('recBtn');
+    const recordTimer = document.getElementById('recordTimer');
+
+    async function toggleRecording() {
+        if (!isRecording) {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+
+                mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
+                mediaRecorder.start();
+
+                isRecording = true;
+                recBtn.innerText = '⏹️ إيقاف وحفظ التسجيل';
+                recBtn.style.background = '#ef4444';
+                recBtn.style.color = '#fff';
+
+                secondsRecorded = 0;
+                recordTimer.innerText = "00:00";
+                recordInterval = setInterval(() => {
+                    secondsRecorded++;
+                    recordTimer.innerText = formatTime(secondsRecorded);
+                }, 1000);
+
+            } catch (err) {
+                alert('يرجى السماح بصلحية الميكروفون لبدء التسجيل الصوتي.');
+            }
+        } else {
+            mediaRecorder.stop();
+            clearInterval(recordInterval);
+            isRecording = false;
+
+            recBtn.innerText = '🎤 بدء التسجيل التطبيقي';
+            recBtn.style.background = 'var(--accent-yellow)';
+            recBtn.style.color = '#000';
+            
+            alert(`تم تسجيل الكبسولة الصوتية بنجاح! المدة: ${formatTime(secondsRecorded)}`);
+        }
+    }
+
+    // فتح الشهادة بعد استيفاء الشروط
+    function unlockCertificateMock() {
+        document.getElementById('userXP').innerText = "300";
+        document.getElementById('certLocked').style.display = 'none';
+        document.getElementById('certUnlocked').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
