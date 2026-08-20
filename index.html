@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#08080A">
+<title>طريق الأمير 👑</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Noto+Sans+SC:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#09090D;
+  --bg-e:#13131A;
+  --card:#1A1A26;
+  --border:#262636;
+  --text:#F9F9FB;
+  --text-2:#A8A9B8;
+  --text-3:#7A7B8C;
+  --gold:#FFD84D;
+  --gold2:#FFC61A;
+  --gold-bg:rgba(255,216,77,0.08);
+  --gold-bd:rgba(255,216,77,0.22);
+  --r-xl:18px;
+  --r-pill:100px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
+.app{max-width:460px;margin:0 auto;padding:16px;min-height:100vh;padding-bottom:50px}
+
+/* الهيدر وشريط التقدم */
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.h-brand{display:flex;align-items:center;gap:10px}
+.h-logo{width:42px;height:42px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#000;font-size:20px}
+.h-title{font-size:17px;font-weight:900;color:#fff}
+.h-sub{font-size:10.5px;color:var(--text-2)}
+
+.progress-container{background:var(--bg-e);border:1px solid var(--border);border-radius:var(--r-pill);height:10px;overflow:hidden;margin-bottom:12px}
+.progress-bar{background:linear-gradient(90deg,var(--gold),var(--gold2));height:100%;width:0%;transition:width .3s ease}
+
+/* أداة التحكم بالسرعة والبحث */
+.tools-bar{display:flex;gap:8px;margin-bottom:12px}
+.search-input{flex:1;padding:9px 12px;border-radius:10px;border:1px solid var(--border);background:var(--bg-e);color:#fff;font-size:11.5px;outline:none}
+.speed-btn{background:var(--bg-e);border:1px solid var(--border);color:var(--gold);padding:0 12px;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer}
+
+/* التبويب الرئيسي */
+.main-tabs{display:flex;gap:6px;margin-bottom:16px;background:var(--bg-e);padding:4px;border-radius:14px;border:1px solid var(--border)}
+.tab-btn{flex:1;padding:10px;border:none;border-radius:10px;color:var(--text-2);font-weight:800;font-size:11px;cursor:pointer;text-align:center;background:transparent;transition:all .2s}
+.tab-btn.active{background:var(--gold);color:#000}
+
+.section-page{display:none}
+.section-page.active{display:block;animation:fadeIn .25s ease}
+
+/* التحدي اللساني */
+.challenge-box{background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:18px;margin-bottom:16px}
+.ch-header{text-align:center;margin-bottom:14px}
+.ch-title{color:var(--gold);font-size:16px;font-weight:900}
+.ch-desc{font-size:11px;color:var(--text-2);margin-top:2px}
+
+.words-list{display:grid;gap:10px;margin:12px 0}
+.word-item-wrap{background:var(--bg-e);border:1px solid var(--border);border-radius:14px;padding:12px;transition:all .2s}
+.word-item-wrap:hover{border-color:var(--gold-bd)}
+.word-main{display:flex;align-items:center;justify-content:space-between}
+.word-cn{font-size:17px;font-weight:700;color:#fff;font-family:'Noto Sans SC',sans-serif}
+.word-en{font-size:11px;color:var(--text-3);font-weight:700}
+.word-py{font-size:10.5px;color:var(--gold);margin-top:1px}
+.word-ar{font-size:13px;font-weight:700;color:var(--text)}
+
+.word-actions{display:flex;align-items:center;gap:6px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);flex-wrap:wrap}
+.audio-btn{background:var(--gold-bg);border:1px solid var(--gold-bd);color:var(--gold);padding:4px 8px;border-radius:8px;font-size:10.5px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.quote-toggle,.copy-btn{background:none;border:none;color:var(--text-3);font-size:10.5px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.quote-toggle:hover,.copy-btn:hover{color:var(--gold)}
+
+.quote-content{display:none;background:rgba(0,0,0,0.35);border-right:3px solid var(--gold);padding:10px;border-radius:4px 8px 8px 4px;margin-top:8px;font-size:11px;color:#EAEAEA;line-height:1.6}
+.quote-content.show{display:block;animation:fadeIn .2s ease}
+
+/* نظام الاختبار التفاعلي */
+.quiz-card{background:var(--bg-e);border:1px solid var(--gold-bd);border-radius:14px;padding:16px;text-align:center;margin-bottom:16px}
+.quiz-q{font-size:18px;font-weight:800;color:var(--gold);margin-bottom:12px;font-family:'Noto Sans SC',sans-serif}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.quiz-opt{background:var(--card);border:1px solid var(--border);color:#fff;padding:10px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer}
+.quiz-opt:hover{border-color:var(--gold)}
+
+/* أمهات الكتب */
+.book-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:18px;margin-bottom:14px}
+.book-badge{display:inline-block;padding:3px 9px;background:var(--gold-bg);border:1px solid var(--gold-bd);border-radius:6px;font-size:10px;color:var(--gold);font-weight:800;margin-bottom:8px}
+.book-title{font-size:15px;font-weight:800;color:#fff}
+.book-author{font-size:11px;color:var(--text-3);margin-bottom:10px}
+.book-text{font-size:12px;color:var(--text-2);line-height:1.6;margin-bottom:12px}
+.gold-quote{background:rgba(0,0,0,0.4);border-right:3px solid var(--gold);padding:10px 12px;border-radius:4px 8px 8px 4px;font-size:11.5px;color:#EAEAEA;font-style:italic;line-height:1.6}
+
+/* نموذج الإرسال والسجل */
+.form-group{margin-top:12px}
+.form-group label{font-size:11px;color:var(--text-2);margin-bottom:4px;display:block;font-weight:700}
+.form-group input{width:100%;padding:11px;border-radius:10px;border:1px solid var(--border);background:var(--bg-e);color:#fff;font-size:12px;outline:none}
+.btn-submit{width:100%;margin-top:16px;background:linear-gradient(90deg,var(--gold),var(--gold2));color:#000;border:none;padding:13px;border-radius:12px;font-weight:900;font-size:13.5px;cursor:pointer}
+.history-box{margin-top:14px;padding:10px;background:var(--bg-e);border:1px solid var(--border);border-radius:12px;font-size:11px;color:var(--text-2)}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="header">
+    <div class="h-brand">
+      <div class="h-logo">ع</div>
+      <div>
+        <div class="h-title">طريق الأمير 👑</div>
+        <div class="h-sub">التحدي اللساني والموسوعة الاستراتيجية الشاملة</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <div class="tools-bar">
+    <input type="text" class="search-input" id="searchInput" placeholder="🔍 بحث سريع في المفردات والشواهد..." oninput="filterData()">
+    <button class="speed-btn" id="speedBtn" onclick="toggleSpeed()">السرعة: 1.0x</button>
+  </div>
+
+  <div class="main-tabs">
+    <button class="tab-btn active" onclick="switchTab('challenge', event)">🎙️ التحدي اللساني</button>
+    <button class="tab-btn" onclick="switchTab('quiz', event)">🧠 الاختبار السريع</button>
+    <button class="tab-btn" onclick="switchTab('books', event)">📜 موسوعة الحِكم</button>
+  </div>
+
+  <!-- التحدي اللساني -->
+  <div id="page-challenge" class="section-page active">
+    <div class="challenge-box">
+      <div class="ch-header">
+        <div class="ch-title">🎙️ نزهة التحدي اللساني والاستراتيجي</div>
+        <div class="ch-desc">استمع للنطق، تدبر الشاهد الحضاري، وسجل المقطع الشامل</div>
+      </div>
+
+      <div class="words-list" id="challengeWords"></div>
+
+      <div class="form-group">
+        <label>الاسم الكامل 📝</label>
+        <input type="text" id="userName" value="امير محمد حسن غالب السعيدي" oninput="saveUserData()">
+      </div>
+      <div class="form-group">
+        <label>رابط فيديو أو صوت التحدي 🎬</label>
+        <input type="url" id="mediaLink" placeholder="ضع رابط Google Drive أو YouTube" oninput="saveUserData()">
+      </div>
+
+      <button class="btn-submit" onclick="submitChallenge()">إرسال التحدي للمراجعة 🚀</button>
+
+      <div class="history-box" id="historyBox">
+        ⏳ لم يتم إرسال أي تحدي حتى الآن.
+      </div>
+    </div>
+  </div>
+
+  <!-- الاختبار الذكي -->
+  <div id="page-quiz" class="section-page">
+    <div class="challenge-box">
+      <div class="ch-header">
+        <div class="ch-title">🧠 اختبار الاستيعاب والتثبيت السريع</div>
+        <div class="ch-desc">اختر المعنى الصحيح للمفرده الصينية المطروحة</div>
+      </div>
+      <div class="quiz-card">
+        <div class="quiz-q" id="quizQuestion">---</div>
+        <div class="quiz-options" id="quizOptions"></div>
+      </div>
+      <div id="quizFeedback" style="text-align:center; font-size:12px; font-weight:800; color:var(--gold);"></div>
+    </div>
+  </div>
+
+  <!-- موسوعة أمهات الكتب والحكم -->
+  <div id="page-books" class="section-page">
+    <div id="booksContainer"></div>
+  </div>
+</div>
+
+<script>
+// البيانات الشاملة
+const challengeData = [
+  { cn: "你好", en: "Hello", py: "nǐ hǎo", ar: "مرحباً", quote: "«التواصلُ بوابَةُ التأثير؛ وَالعاقِلُ مَن يَسْتَفْتِحُ القُلُوبَ قَبْلَ العُقُولِ.» — أرسطو (الحضارة الإغريقية)" },
+  { cn: "谢谢", en: "Thank you", py: "xiè xie", ar: "شكراً", quote: "«الاعْتِرَافُ بِالفَضْلِ عِمَادُ المُرُوءَةِ، وَشُكْرُ الصَّنِيعِ يَفْتَحُ أَبْوَابَ الشَّرَاكَةِ الدَّائِمَةِ.» — كنفوشيوس (الحضارة الصينية)" },
+  { cn: "多少钱", en: "How much?", py: "duō shǎo qián", ar: "كم السعر؟", quote: "«العِلْمُ بِالقِيمَةِ قَبْلَ الشِّرَاءِ يَقِي المَغْبُونَ مَرارَةَ النَّدَمِ.» — ابن خلدون (الحضارة الإسلامية)" },
+  { cn: "太贵了", en: "Too expensive", py: "tài guì le", ar: "غالي جداً", quote: "«لا تَدْفَعْ ثَمَناً لِشَيْءٍ يُمكنُ الحُصُولُ عَلَيْهِ بِقِيمَةٍ أَعْدَلَ؛ فَالحَزْمُ أَبُو المَالِ.» — سنيكا (الحضارة الرومانية)" },
+  { cn: "便宜一点", en: "A bit cheaper", py: "pián yi yì diǎn", ar: "أرخص قليلاً", quote: "«التَّفَاوُضُ الحَكِيمُ لا يُخْسِرُ الشَّرِيكَ، بَلْ يُحَقِّقُ التَّوَازُنَ المُسْتَدَامَ.» — تشاناكيا (الحضارة الهندية)" },
+  { cn: "最低价", en: "Lowest price", py: "zuì dī jià", ar: "أقل سعر", quote: "«أَكْرَمُ التِّجَارَةِ مَا قَامَ عَلَى الصِّدْقِ وَخَفَّتْ فِيهِ المَؤُونَةُ.» — كتاب الأموال (التراث العربي)" },
+  { cn: "订金", en: "Deposit", py: "dìng jīn", ar: "عربون", quote: "«العُقُودُ وَثَاقُ العُهُودِ، وَبِهَا تَسْتَقِيمُ أَمْوَالُ النَّاسِ وَتَسْلَمُ المعاملات.» — مقدمة ابن خلدون" },
+  { cn: "工厂", en: "Factory", py: "gōng chǎng", ar: "مصنع", quote: "«مَنْ أَمْضَى يَوْمَهُ فِي غَيْرِ حَقٍّ قَضَاهُ، أَوْ مَجْدٍ بَنَاهُ؛ فَقَدْ ظَلَمَ يَوْمَهُ.» — ابن الجوزي (صيد الخاطر)" },
+  { cn: "样品", en: "Sample", py: "yàng pǐn", ar: "عينة", quote: "«الدَّلِيلُ الصَّغِيرُ يَدُلُّ عَلَى الكَثِيرِ المَسْتُورِ، وَالعَيْنُ مِيزَانُ الخَبِيرِ.» — ابن المقفع (كليلة ودمنة)" },
+  { cn: "海运", en: "Sea freight", py: "hǎi yùn", ar: "شحن بحري", quote: "«الاستراتيجيةُ الصَّائِبَةُ هِيَ الَّتِي تَحْسِبُ حَرَكَةَ الرِّيَاحِ قَبْلَ إِبْحَارِ السُّفُنِ.» — سون تزو (فن الحرب)" }
+];
+
+const booksData = [
+  { tag: "فلسفة العمران والاقتصاد", title: "مقدمة ابن خلدون", author: "المؤلف: ابن خلدون (الحضارة الإسلامية)", summary: "دراسة علمية لتطور المجتمعات والأسواق وحركة التجارة الدولية وأثر العدل في ازدهار العمران.", quote: "«إنّ الخَرابَ يَسْتَوْلِي عَلَى المَمالِكِ إذَا قَلَّ العَمَرُ وَانْقَطَعَ التَّجَارُ.»" },
+  { tag: "التخطيط والحكمة الاستراتيجية", title: "فن الحرب (Art of War)", author: "المؤلف: سون تزو (الحضارة الصينية)", summary: "المرجع العالمي الأكثر تأثيراً في التخطيط، إدارات الأزمات، والتفاوض الذكي دون إهدار الموارد.", quote: "«أَعْظَمُ المَعَارِكِ هِيَ تِلْكَ الَّتِي تَكْسِبُهَا دُونَ أَنْ تَخُوضَ المَقَالَةَ.»" },
+  { tag: "الاقتصاد السياسي والإنتاج", title: "ثروة الأمم", author: "المؤلف: آدم سميث (الحضارة الغربية)", summary: "التأسيس العلمي لأسواق العالم الحديثة، حركة السلع عبر القارات، وتقسيم العمل لرفع الكفاءة.", quote: "«تتكون ثروة الأمم الحقيقية من الإنتاج والتبادل الحر المنظم.»" },
+  { tag: "القيادة والحكمة التكتيكية", title: "أرثاشاسترا (Arthashastra)", author: "المؤلف: تشاناكيا (الحضارة الهندية)", summary: "موسوعة استراتيجية قديمة في إدارة الدولة، التنظيم المالي، حماية المصالح، والتخطيط المحكم.", quote: "«قبل أن تبدأ عملك، اسأل نفسك دائماً: ما الهدف، ما النتائج، وهل ستنجح؟»" }
+];
+
+let speechRate = 0.85;
+let interactedCount = new Set();
+let currentQuizCorrect = "";
+
+function toggleSpeed(){
+  if(speechRate === 0.85){
+    speechRate = 0.5;
+    document.getElementById('speedBtn').innerText = "السرعة: 0.5x";
+  } else {
+    speechRate = 0.85;
+    document.getElementById('speedBtn').innerText = "السرعة: 1.0x";
+  }
+}
+
+function switchTab(tab, event){
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.section-page').forEach(p => p.classList.remove('active'));
+  if(event) event.target.classList.add('active');
+  document.getElementById(`page-${tab}`).classList.add('active');
+  if(tab === 'quiz') generateQuiz();
+}
+
+function speakWord(text, lang){
+  if('speechSynthesis' in window){
+    window.speechSynthesis.cancel();
+    const msg = new SpeechSynthesisUtterance(text);
+    msg.lang = lang;
+    msg.rate = speechRate;
+    window.speechSynthesis.speak(msg);
+  }
+}
+
+function updateProgress(id){
+  interactedCount.add(id);
+  const percent = (interactedCount.size / challengeData.length) * 100;
+  document.getElementById('progressBar').style.width = percent + '%';
+}
+
+function renderChallenge(data = challengeData){
+  const container = document.getElementById('challengeWords');
+  let html = '';
+  data.forEach((item, index) => {
+    html += `
+      <div class="word-item-wrap">
+        <div class="word-main">
+          <div>
+            <div class="word-cn">${item.cn}</div>
+            <div class="word-en">${item.en}</div>
+            <div class="word-py">${item.py}</div>
+          </div>
+          <div style="text-align:left">
+            <div class="word-ar">${item.ar}</div>
+          </div>
+        </div>
+        <div class="word-actions">
+          <button class="audio-btn" onclick="speakWord('${item.cn}', 'zh-CN'); updateProgress(${index})">🇨🇳 صيني</button>
+          <button class="audio-btn" onclick="speakWord('${item.en}', 'en-US'); updateProgress(${index})">🇺🇸 إنجليزي</button>
+          <button class="quote-toggle" onclick="toggleQuote(${index}); updateProgress(${index})">📜 الشاهد ▾</button>
+          <button class="copy-btn" onclick="copyQuote('${item.quote}')">📋 نسخ</button>
+        </div>
+        <div class="quote-content" id="quote-${index}">${item.quote}</div>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+function toggleQuote(id){
+  document.getElementById(`quote-${id}`).classList.toggle('show');
+}
+
+function copyQuote(text){
+  navigator.clipboard.writeText(text);
+  alert('تم نسخ الشاهد الذهبي بنجاح!');
+}
+
+function renderBooks(data = booksData){
+  const container = document.getElementById('booksContainer');
+  let html = '';
+  data.forEach(item => {
+    html += `
+      <div class="book-card">
+        <span class="book-badge">${item.tag}</span>
+        <div class="book-title">${item.title}</div>
+        <div class="book-author">${item.author}</div>
+        <div class="book-text">${item.summary}</div>
+        <div class="gold-quote">💡 ${item.quote}</div>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+function filterData(){
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  const filteredWords = challengeData.filter(w => w.ar.includes(query) || w.en.toLowerCase().includes(query) || w.cn.includes(query) || w.quote.includes(query));
+  const filteredBooks = booksData.filter(b => b.title.includes(query) || b.summary.includes(query) || b.quote.includes(query));
+  renderChallenge(filteredWords);
+  renderBooks(filteredBooks);
+}
+
+/* نظام الاختبار التفاعلي */
+function generateQuiz(){
+  const randomItem = challengeData[Math.floor(Math.random() * challengeData.length)];
+  currentQuizCorrect = randomItem.ar;
+  document.getElementById('quizQuestion').innerText = `${randomItem.cn} (${randomItem.py})`;
+  
+  let options = [randomItem.ar];
+  while(options.length < 4){
+    const opt = challengeData[Math.floor(Math.random() * challengeData.length)].ar;
+    if(!options.includes(opt)) options.push(opt);
+  }
+  options.sort(() => Math.random() - 0.5);
+
+  let optsHtml = '';
+  options.forEach(opt => {
+    optsHtml += `<button class="quiz-opt" onclick="checkQuiz('${opt}')">${opt}</button>`;
+  });
+  document.getElementById('quizOptions').innerHTML = optsHtml;
+  document.getElementById('quizFeedback').innerText = '';
+}
+
+function checkQuiz(selected){
+  const feedback = document.getElementById('quizFeedback');
+  if(selected === currentQuizCorrect){
+    feedback.innerText = "✨ إجابة صحيحة! أحسنت والتزام ممتاذ.";
+    setTimeout(generateQuiz, 1200);
+  } else {
+    feedback.innerText = `❌ إجابة غير صحيحة، الإجابة هي: (${currentQuizCorrect})`;
+  }
+}
+
+function saveUserData(){
+  localStorage.setItem('ameer_user_name', document.getElementById('userName').value);
+  localStorage.setItem('ameer_media_link', document.getElementById('mediaLink').value);
+}
+
+function loadUserData(){
+  const savedName = localStorage.getItem('ameer_user_name');
+  const savedLink = localStorage.getItem('ameer_media_link');
+  const savedHistory = localStorage.getItem('ameer_history');
+  
+  if(savedName) document.getElementById('userName').value = savedName;
+  if(savedLink) document.getElementById('mediaLink').value = savedLink;
+  if(savedHistory) document.getElementById('historyBox').innerHTML = savedHistory;
+}
+
+function submitChallenge(){
+  const link = document.getElementById('mediaLink').value;
+  if(!link){ alert('يرجى وضع رابط الفيديو أو المقطع الصوتي'); return; }
+  
+  const now = new Date().toLocaleDateString('ar-EG');
+  const historyText = `✅ آخر إرسال بنجاح بتاريخ: ${now}`;
+  localStorage.setItem('ameer_history', historyText);
+  document.getElementById('historyBox').innerHTML = historyText;
+  
+  alert('تم إرسال التحدي بنجاح!');
+}
+
+renderChallenge();
+renderBooks();
+loadUserData();
+</script>
+</body>
+</html>
