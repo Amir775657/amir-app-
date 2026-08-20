@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#08080A">
+<title>طريق الأمير 👑</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Noto+Sans+SC:wght@700&family=Amiri:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07070A;
+  --bg-e:#101018;
+  --card:rgba(22, 22, 34, 0.75);
+  --border:rgba(255, 216, 77, 0.12);
+  --text:#F9F9FB;
+  --text-2:#A8A9B8;
+  --text-3:#7A7B8C;
+  --gold:#FFD84D;
+  --gold2:#FFC61A;
+  --gold-bg:rgba(255,216,77,0.08);
+  --gold-bd:rgba(255,216,77,0.25);
+  --r-xl:18px;
+  --r-pill:100px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6;background-image:radial-gradient(circle at top, rgba(255,216,77,0.03), transparent 60%)}
+.app{max-width:480px;margin:0 auto;padding:16px;min-height:100vh;padding-bottom:50px}
+
+/* الهيدر وشريط التقدم */
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.h-brand{display:flex;align-items:center;gap:10px}
+.h-logo{width:44px;height:44px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#000;font-size:22px;box-shadow:0 0 16px rgba(255,216,77,0.25)}
+.h-title{font-size:18px;font-weight:900;color:#fff;letter-spacing:-0.2px}
+.h-sub{font-size:10.5px;color:var(--text-2)}
+
+.progress-container{background:var(--bg-e);border:1px solid var(--border);border-radius:var(--r-pill);height:8px;overflow:hidden;margin-bottom:14px}
+.progress-bar{background:linear-gradient(90deg,var(--gold),var(--gold2));height:100%;width:0%;transition:width .4s ease}
+
+/* أدوات البحث والسرعة */
+.tools-bar{display:flex;gap:8px;margin-bottom:14px}
+.search-input{flex:1;padding:10px 14px;border-radius:12px;border:1px solid var(--border);background:var(--bg-e);color:#fff;font-size:12px;outline:none;transition:border .2s}
+.search-input:focus{border-color:var(--gold)}
+.speed-btn{background:var(--bg-e);border:1px solid var(--border);color:var(--gold);padding:0 14px;border-radius:12px;font-size:11px;font-weight:800;cursor:pointer;transition:all .2s}
+.speed-btn:active{transform:scale(0.95)}
+
+/* التبويب الرئيسي */
+.main-tabs{display:flex;gap:6px;margin-bottom:18px;background:var(--bg-e);padding:4px;border-radius:16px;border:1px solid var(--border)}
+.tab-btn{flex:1;padding:11px 6px;border:none;border-radius:12px;color:var(--text-2);font-weight:800;font-size:11.5px;cursor:pointer;text-align:center;background:transparent;transition:all .25s}
+.tab-btn.active{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;box-shadow:0 2px 10px rgba(255,216,77,0.2)}
+
+.section-page{display:none}
+.section-page.active{display:block;animation:fadeIn .25s ease}
+
+/* قائمة الكلمات والمفردات - توزيع ثلاثي */
+.challenge-box{background:var(--card);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:var(--r-xl);padding:18px;margin-bottom:16px;box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+.ch-header{text-align:center;margin-bottom:14px}
+.ch-title{color:var(--gold);font-size:16.5px;font-weight:900}
+.ch-desc{font-size:11px;color:var(--text-2);margin-top:2px}
+
+.words-list{display:grid;gap:12px;margin:12px 0}
+.word-item-wrap{background:var(--bg-e);border:1px solid var(--border);border-radius:16px;padding:14px;transition:all .25s}
+.word-item-wrap:hover{border-color:var(--gold-bd);transform:translateY(-1px)}
+
+.word-header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.word-ar-title{font-size:15.5px;font-weight:900;color:var(--gold)}
+
+.lang-grid-3{display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:8px}
+.lang-box{background:rgba(255,255,255,0.02);padding:8px 11px;border-radius:10px;border:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center}
+.lang-info{flex:1}
+.lang-label{font-size:10px;color:var(--text-3);font-weight:700;display:block}
+.lang-text{font-size:14px;font-weight:800;color:#fff}
+
+.lang-phonetic{
+  font-family: 'Amiri', serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--gold);
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgba(255,216,77,0.06);
+  display: inline-block;
+  border-right: 2px solid var(--gold);
+}
+
+.word-actions{display:flex;align-items:center;gap:6px;margin-top:10px;padding-top:8px;border-top:1px dashed rgba(255,255,255,0.06);flex-wrap:wrap}
+.audio-btn{background:var(--gold-bg);border:1px solid var(--gold-bd);color:var(--gold);padding:5px 9px;border-radius:8px;font-size:10.5px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:3px;transition:all .2s}
+.audio-btn:active{transform:scale(0.95)}
+.quote-btn{background:none;border:none;color:var(--text-3);font-size:11px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:4px;margin-right:auto}
+.quote-btn:hover{color:var(--gold)}
+
+.tactical-quote{display:none;background:rgba(0,0,0,0.4);border-right:3px solid var(--gold);padding:10px 12px;border-radius:4px 10px 10px 4px;margin-top:10px;font-size:11.5px;color:#EAEAEA;line-height:1.6;font-style:italic}
+.tactical-quote.show{display:block;animation:fadeIn .25s ease}
+
+/* الاختبار السريع */
+.quiz-card{background:var(--bg-e);border:1px solid var(--gold-bd);border-radius:16px;padding:20px;text-align:center;margin-bottom:16px}
+.quiz-q{font-size:18px;font-weight:900;color:var(--gold);margin-bottom:4px}
+.quiz-phonetic{font-size:13px;color:var(--text-2);margin-bottom:14px;font-family:'Amiri',serif}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.quiz-opt{background:var(--card);border:1px solid var(--border);color:#fff;padding:12px;border-radius:12px;font-size:12.5px;font-weight:800;cursor:pointer;transition:all .2s}
+.quiz-opt:hover{border-color:var(--gold);background:var(--gold-bg)}
+
+/* شهادة الإنجاز الرسمية */
+.cert-card{
+  background: #fff;
+  color: #0f172a;
+  border: 6px double #c59b27;
+  border-radius: 12px;
+  padding: 24px 20px;
+  text-align: center;
+  margin-top: 16px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  background-image: radial-gradient(circle at center, #ffffff, #fdfbf7);
+}
+.cert-header{font-size:20px;font-weight:900;color:#0d1b2a;border-bottom:2px solid #c59b27;padding-bottom:8px;margin-bottom:14px;font-family:'Amiri',serif}
+.cert-body{font-size:12.5px;line-height:1.8;color:#334155;margin-bottom:16px}
+.cert-name{font-size:18px;font-weight:900;color:#b48314;margin:6px 0;display:block;font-family:'Amiri',serif}
+.cert-seal{
+  width: 54px;
+  height: 54px;
+  background: linear-gradient(135deg, #c59b27, #9a7413);
+  border-radius: 50%;
+  margin: 10px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 22px;
+  box-shadow: 0 4px 10px rgba(197,155,39,0.4);
+}
+.cert-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #e2e8f0;padding-top:10px;font-size:10px;color:#64748b}
+
+/* النموذج */
+.form-group{margin-top:12px}
+.form-group label{font-size:11px;color:var(--text-2);margin-bottom:4px;display:block;font-weight:700}
+.form-group input{width:100%;padding:11px 13px;border-radius:10px;border:1px solid var(--border);background:var(--bg-e);color:#fff;font-size:12px;outline:none}
+.btn-submit{width:100%;margin-top:16px;background:linear-gradient(90deg,var(--gold),var(--gold2));color:#000;border:none;padding:13px;border-radius:12px;font-weight:900;font-size:13.5px;cursor:pointer;box-shadow:0 4px 14px rgba(255,216,77,0.2)}
+.btn-submit:active{transform:scale(0.98)}
+.history-box{margin-top:14px;padding:10px;background:var(--bg-e);border:1px solid var(--border);border-radius:12px;font-size:11px;color:var(--text-2)}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="header">
+    <div class="h-brand">
+      <div class="h-logo">👑</div>
+      <div>
+        <div class="h-title">طريق الأمير</div>
+        <div class="h-sub">التحدي اللساني والتأهيل التجاري الدولي</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <div class="tools-bar">
+    <input type="text" class="search-input" id="searchInput" placeholder="🔍 بحث في اللغات الثلاث والشواهد..." oninput="filterData()">
+    <button class="speed-btn" id="speedBtn" onclick="toggleSpeed()">السرعة: 1.0x</button>
+  </div>
+
+  <div class="main-tabs">
+    <button class="tab-btn active" onclick="switchTab('challenge', event)">🎙️ التحدي اللساني</button>
+    <button class="tab-btn" onclick="switchTab('quiz', event)">🧠 الاختبار السريع</button>
+    <button class="tab-btn" onclick="switchTab('cert', event)">📜 شهادة الإنجاز</button>
+  </div>
+
+  <!-- التحدي اللساني -->
+  <div id="page-challenge" class="section-page active">
+    <div class="challenge-box">
+      <div class="ch-header">
+        <div class="ch-title">🎙️ نزهة التحدي اللساني (صيني - إنجليزي - تركي)</div>
+        <div class="ch-desc">استمع واستحضر المصطلحات التجارية التفاوضية</div>
+      </div>
+
+      <div class="words-list" id="challengeWords"></div>
+
+      <div class="form-group">
+        <label>الاسم الكامل 📝</label>
+        <input type="text" id="userName" value="امير محمد حسن غالب السعيدي" oninput="saveUserData()">
+      </div>
+      <div class="form-group">
+        <label>رابط فيديو أو صوت التحدي 🎬</label>
+        <input type="url" id="mediaLink" placeholder="ضع رابط Google Drive أو YouTube" oninput="saveUserData()">
+      </div>
+
+      <button class="btn-submit" onclick="submitChallenge()">إرسال التحدي للمراجعة 🚀</button>
+
+      <div class="history-box" id="historyBox">
+        ⏳ لم يتم إرسال أي تحدي حتى الآن.
+      </div>
+    </div>
+  </div>
+
+  <!-- الاختبار الذكي -->
+  <div id="page-quiz" class="section-page">
+    <div class="challenge-box">
+      <div class="ch-header">
+        <div class="ch-title">🧠 اختبار الاستيعاب والتثبيت السريع</div>
+        <div class="ch-desc">اختر المعنى العربي الصحيح للمفردة المطروحة</div>
+      </div>
+      <div class="quiz-card">
+        <div class="quiz-q" id="quizQuestion">---</div>
+        <div class="quiz-phonetic" id="quizPhonetic">---</div>
+        <div class="quiz-options" id="quizOptions"></div>
+      </div>
+      <div id="quizFeedback" style="text-align:center; font-size:12px; font-weight:800; color:var(--gold);"></div>
+    </div>
+  </div>
+
+  <!-- شهادة الإنجاز المؤسسية -->
+  <div id="page-cert" class="section-page">
+    <div class="challenge-box">
+      <div class="ch-header">
+        <div class="ch-title">📜 شهادة التمكين والتفاوض التجاري</div>
+        <div class="ch-desc">تُمنح بناءً على إكمال التحديات والتقييم الميداني</div>
+      </div>
+
+      <div class="cert-card" id="certFrame">
+        <div class="cert-header">شهادة كفاءة وتأهيل استراتيجي</div>
+        <div class="cert-body">
+          تشهد إدارة مشروع <strong>طريق الأمير 👑</strong> بأن الأخ:<br>
+          <span class="cert-name" id="certUserName">امير محمد حسن غالب السعيدي</span>
+          قد أتم بنجاح متطلبات <strong>التحدي اللساني والتأهيل التجاري المباشر (الصينية، الإنجليزية، التركية)</strong>، وأظهر كفاءة عالية في استخدام المصطلحات التكتيكية واللغة التفاوضية.
+        </div>
+        <div class="cert-seal">👑</div>
+        <div class="cert-footer">
+          <div>التاريخ: <span id="certDate">2026/08/20</span></div>
+          <div>الاعتماد: منصة طريق الأمير 👑</div>
+        </div>
+      </div>
+
+      <button class="btn-submit" onclick="window.print()">طباعة الشهادة / حفظ PDF 🖨️</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// قائمة البيانات الثلاثية (صيني - إنجليزي - تركي)
+const challengeData = [
+  { cn: "你好", cn_p: "نِي هَاوْ", en: "Hello", en_p: "هَلُوو", tr: "Merhaba", tr_p: "مَرْهَابَا", ar: "مرحباً", quote: "«التواصلُ بوابَةُ التأثير؛ وَالعاقِلُ مَن يَسْتَفْتِحُ القُلُوبَ قَبْلَ العُقُولِ.» — أرسطو" },
+  { cn: "谢谢", cn_p: "شْيَه شْيَه", en: "Thank you", en_p: "ثَانْكْ يُو", tr: "Teşekkür ederim", tr_p: "تَشَكُّورْ إِيدِيرِمْ", ar: "شكراً", quote: "«الاعْتِرَافُ بِالفَضْلِ عِمَادُ المُرُوءَةِ، وَشُكْرُ الصَّنِيعِ يَفْتَحُ أَبْوَابَ الشَّرَاكَةِ الدَّائِمَةِ.» — كنفوشيوس" },
+  { cn: "多少钱", cn_p: "دُوو شَاوْ شْيَانْ", en: "How much?", en_p: "هَاوْ مَاتْش", tr: "Ne kadar?", tr_p: "نِهْ كَادَارْ؟", ar: "كم السعر؟", quote: "«العِلْمُ بِالقِيمَةِ قَبْلَ الشِّرَاءِ يَقِي المَغْبُونَ مَرارَةَ النَّدَمِ.» — ابن خلدون" },
+  { cn: "太贵了", cn_p: "تَايْ غْوِي لَه", en: "Too expensive", en_p: "تُو إِكْسْبِينْسِيفْ", tr: "Çok pahalı", tr_p: "تْشُوكْ بَاهَالَى", ar: "غالي جداً", quote: "«لا تَدْفَعْ ثَمَناً لِشَيْءٍ يُمكنُ الحُصُولُ عَلَيْهِ بِقِيمَةٍ أَعْدَلَ؛ فَالحَزْمُ أَبُو المَالِ.» — سنيكا" },
+  { cn: "便宜一点", cn_p: "بْيَانْ يِي يِي دْيَانْ", en: "A bit cheaper", en_p: "أَ بِيتْ شِيبَرْ", tr: "Biraz ucuz", tr_p: "بِيرَازْ أُوجُوزْ", ar: "أرخص قليلاً", quote: "«التَّفَاوُضُ الحَكِيمُ لا يُخْسِرُ الشَّرِيكَ، بَلْ يُحَقِّقُ التَّوَازُنَ المُسْتَدَامَ.» — تشاناكيا" },
+  { cn: "最低价", cn_p: "زْوِي دِي جْيَا", en: "Lowest price", en_p: "لُووِيسْتْ بْرَايْسْ", tr: "En son fiyat", tr_p: "إِنْ صُونْ فْيَاتْ", ar: "أقل سعر", quote: "«أَكْرَمُ التِّجَارَةِ مَا قَامَ عَلَى الصِّدْقِ وَخَفَّتْ فِيهِ المَؤُونَةُ.» — كتاب الأموال" },
+  { cn: "订金", cn_p: "دِينْغْ جِينْ", en: "Deposit", en_p: "دِيبُوزِيتْ", tr: "Kapora", tr_p: "كَابُورَا", ar: "عربون", quote: "«العُقُودُ وَثَاقُ العُهُودِ، وَبِهَا تَسْتَقِيمُ أَمْوَالُ النَّاسِ وَتَسْلَمُ المعاملات.» — مقدمة ابن خلدون" },
+  { cn: "工厂", cn_p: "غُونْغْ تشَانْغْ", en: "Factory", en_p: "فَاكْتُورِي", tr: "Fabrika", tr_p: "فَابْرِيكَا", ar: "مصنع", quote: "«مَنْ أَمْضَى يَوْمَهُ فِي غَيْرِ حَقٍّ قَضَاهُ، أَوْ مَجْدٍ بَنَاهُ؛ فَقَدْ ظَلَمَ يَوْمَهُ.» — ابن الجوزي" },
+  { cn: "样品", cn_p: "يَانْغْ بِينْ", en: "Sample", en_p: "سَامْبِلْ", tr: "Numune", tr_p: "نُومُونِه", ar: "عينة", quote: "«الدَّلِيلُ الصَّغِيرُ يَدُلُّ عَلَى الكَثِيرِ المَسْتُورِ، وَالعَيْنُ مِيزَانُ الخَبِيرِ.» — ابن المقفع" },
+  { cn: "海运", cn_p: "هَايْ يُوّنْ", en: "Sea freight", en_p: "سِي فْرَايْتْ", tr: "Deniz taşımacılığı", tr_p: "دِينِيزْ طَاشِيمَاجِيلِيغِي", ar: "شحن بحري", quote: "«الاستراتيجيةُ الصَّائِبَةُ هِيَ الَّتِي تَحْسِبُ حَرَكَةَ الرِّيَاحِ قَبْلَ إِبْحَارِ السُّفُنِ.» — سون تزو" }
+];
+
+let speechRate = 0.85;
+let interactedCount = new Set();
+let currentQuizCorrect = "";
+
+function toggleSpeed(){
+  if(speechRate === 0.85){
+    speechRate = 0.5;
+    document.getElementById('speedBtn').innerText = "السرعة: 0.5x";
+  } else {
+    speechRate = 0.85;
+    document.getElementById('speedBtn').innerText = "السرعة: 1.0x";
+  }
+}
+
+function switchTab(tab, event){
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.section-page').forEach(p => p.classList.remove('active'));
+  if(event) event.target.classList.add('active');
+  document.getElementById(`page-${tab}`).classList.add('active');
+  if(tab === 'quiz') generateQuiz();
+  if(tab === 'cert') updateCert();
+}
+
+function speakWord(text, lang){
+  if('speechSynthesis' in window){
+    window.speechSynthesis.cancel();
+    const msg = new SpeechSynthesisUtterance(text);
+    msg.lang = lang;
+    msg.rate = speechRate;
+    window.speechSynthesis.speak(msg);
+  }
+}
+
+function updateProgress(id){
+  interactedCount.add(id);
+  const percent = (interactedCount.size / challengeData.length) * 100;
+  document.getElementById('progressBar').style.width = percent + '%';
+}
+
+function renderChallenge(data = challengeData){
+  const container = document.getElementById('challengeWords');
+  let html = '';
+  data.forEach((item, index) => {
+    html += `
+      <div class="word-item-wrap">
+        <div class="word-header-row">
+          <div class="word-ar-title">${item.ar}</div>
+        </div>
+        
+        <div class="lang-grid-3">
+          <div class="lang-box">
+            <div class="lang-info">
+              <span class="lang-label">🇨🇳 صيني</span>
+              <span class="lang-text" style="font-family:'Noto Sans SC',sans-serif">${item.cn}</span>
+            </div>
+            <div class="lang-phonetic">${item.cn_p}</div>
+          </div>
+          
+          <div class="lang-box">
+            <div class="lang-info">
+              <span class="lang-label">🇺🇸 إنجليزي</span>
+              <span class="lang-text">${item.en}</span>
+            </div>
+            <div class="lang-phonetic">${item.en_p}</div>
+          </div>
+
+          <div class="lang-box">
+            <div class="lang-info">
+              <span class="lang-label">🇹🇷 تركي</span>
+              <span class="lang-text">${item.tr}</span>
+            </div>
+            <div class="lang-phonetic">${item.tr_p}</div>
+          </div>
+        </div>
+
+        <div class="word-actions">
+          <button class="audio-btn" onclick="speakWord('${item.cn}', 'zh-CN'); updateProgress(${index})">🔊 صيني</button>
+          <button class="audio-btn" onclick="speakWord('${item.en}', 'en-US'); updateProgress(${index})">🔊 إنجليزي</button>
+          <button class="audio-btn" onclick="speakWord('${item.tr}', 'tr-TR'); updateProgress(${index})">🔊 تركي</button>
+          <button class="quote-btn" onclick="toggleQuote(${index}); updateProgress(${index})">📜 الشاهد ▾</button>
+        </div>
+        
+        <div class="tactical-quote" id="quote-${index}">${item.quote}</div>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+function toggleQuote(id){
+  document.getElementById(`quote-${id}`).classList.toggle('show');
+}
+
+function filterData(){
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  const filteredWords = challengeData.filter(w => 
+    w.ar.includes(query) || 
+    w.en.toLowerCase().includes(query) || 
+    w.tr.toLowerCase().includes(query) ||
+    w.cn.includes(query) ||
+    w.cn_p.includes(query) ||
+    w.tr_p.includes(query) ||
+    w.quote.includes(query)
+  );
+  renderChallenge(filteredWords);
+}
+
+function generateQuiz(){
+  const randomItem = challengeData[Math.floor(Math.random() * challengeData.length)];
+  currentQuizCorrect = randomItem.ar;
+  
+  // اختيار لغة عشوائية للاختبار (صيني، إنجليزي، تركي)
+  const langTypes = [
+    { text: randomItem.cn, p: randomItem.cn_p, label: "الصينية" },
+    { text: randomItem.en, p: randomItem.en_p, label: "الإذاعية الإنجليزية" },
+    { text: randomItem.tr, p: randomItem.tr_p, label: "التركية" }
+  ];
+  const picked = langTypes[Math.floor(Math.random() * langTypes.length)];
+
+  document.getElementById('quizQuestion').innerText = `${picked.text}`;
+  document.getElementById('quizPhonetic').innerText = `النطق بالـ${picked.label}: (${picked.p})`;
+  
+  let options = [randomItem.ar];
+  while(options.length < 4){
+    const opt = challengeData[Math.floor(Math.random() * challengeData.length)].ar;
+    if(!options.includes(opt)) options.push(opt);
+  }
+  options.sort(() => Math.random() - 0.5);
+
+  let optsHtml = '';
+  options.forEach(opt => {
+    optsHtml += `<button class="quiz-opt" onclick="checkQuiz('${opt}')">${opt}</button>`;
+  });
+  document.getElementById('quizOptions').innerHTML = optsHtml;
+  document.getElementById('quizFeedback').innerText = '';
+}
+
+function checkQuiz(selected){
+  const feedback = document.getElementById('quizFeedback');
+  if(selected === currentQuizCorrect){
+    feedback.innerText = "✨ إجابة صحيحة! أحسنت والتزام ممتاز.";
+    setTimeout(generateQuiz, 1200);
+  } else {
+    feedback.innerText = `❌ إجابة غير صحيحة، الإجابة هي: (${currentQuizCorrect})`;
+  }
+}
+
+function saveUserData(){
+  const nameVal = document.getElementById('userName').value;
+  localStorage.setItem('ameer_user_name', nameVal);
+  localStorage.setItem('ameer_media_link', document.getElementById('mediaLink').value);
+  document.getElementById('certUserName').innerText = nameVal;
+}
+
+function loadUserData(){
+  const savedName = localStorage.getItem('ameer_user_name');
+  const savedLink = localStorage.getItem('ameer_media_link');
+  const savedHistory = localStorage.getItem('ameer_history');
+  
+  if(savedName) {
+    document.getElementById('userName').value = savedName;
+    document.getElementById('certUserName').innerText = savedName;
+  }
+  if(savedLink) document.getElementById('mediaLink').value = savedLink;
+  if(savedHistory) document.getElementById('historyBox').innerHTML = savedHistory;
+}
+
+function updateCert(){
+  const nameVal = document.getElementById('userName').value || "امير محمد حسن غالب السعيدي";
+  document.getElementById('certUserName').innerText = nameVal;
+  document.getElementById('certDate').innerText = new Date().toLocaleDateString('ar-EG');
+}
+
+function submitChallenge(){
+  const link = document.getElementById('mediaLink').value;
+  if(!link){ alert('يرجى وضع رابط الفيديو أو المقطع الصوتي'); return; }
+  
+  const now = new Date().toLocaleDateString('ar-EG');
+  const historyText = `✅ آخر إرسال بنجاح بتاريخ: ${now}`;
+  localStorage.setItem('ameer_history', historyText);
+  document.getElementById('historyBox').innerHTML = historyText;
+  
+  alert('تم إرسال التحدي بنجاح!');
+}
+
+renderChallenge();
+loadUserData();
+</script>
+</body>
+</html>
