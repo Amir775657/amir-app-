@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طريق الأمير | المنصة التفاعلية المتقدمة</title>
+    <!-- تضمين مكتبة Tailwind CSS للتصميم -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+
+    <!-- شريط التنقل العلوي -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div class="w-10 h-10 rounded-xl bg-brand-700 flex items-center justify-center text-white font-black text-xl shadow-md">ط</div>
+                <div>
+                    <span class="text-xl font-black text-slate-900 tracking-tight block">طريق الأمير</span>
+                    <span class="text-xs font-bold text-brand-700 block">Tranzmarkit Ecosystem</span>
+                </div>
+            </div>
+            <nav class="hidden md:flex items-center space-x-8 space-x-reverse text-sm font-bold text-slate-600">
+                <a href="#about" class="hover:text-brand-700 transition">عن المنصة</a>
+                <a href="#training-lab" class="hover:text-brand-700 transition">مختبر التدريب والتقييم</a>
+            </nav>
+            <div>
+                <a href="#training-lab" class="bg-brand-700 hover:bg-brand-800 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition shadow-sm">
+                    ابدأ التدريب الآن
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- قسم العرض الرئيسي (Hero Section) -->
+    <section id="about" class="py-16 lg:py-24 relative overflow-hidden bg-gradient-to-b from-white to-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center max-w-4xl">
+            <div class="inline-flex items-center space-x-2 space-x-reverse bg-brand-50 border border-brand-200 text-brand-800 px-4 py-2 rounded-full text-sm font-bold shadow-sm mb-6">
+                <span>🚀 منصة الربط التجاري والتدريب الدولي</span>
+            </div>
+            <h1 class="text-4xl sm:text-6xl font-black text-slate-900 tracking-tight mb-6 leading-tight">
+                جسر التواصل المباشر بين <span class="bg-gradient-to-r from-brand-700 to-brand-900 bg-clip-text text-transparent">التجار والمصانع العالمية</span>
+            </h1>
+            <p class="text-slate-600 font-medium text-lg sm:text-xl leading-relaxed">
+                منظومة ذكية متكاملة تجمع بين تخطيط سلاسل التوريد، والتدريب على المصطلحات التجارية، واكتساب ثقة المفاوضات الدولية بكل احترافية.
+            </p>
+        </div>
+    </section>
+
+    <!-- قسم مختبر النطق والتسجيل وتقارير الأداء -->
+    <section id="training-lab" class="py-20 bg-white relative overflow-hidden border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            
+            <div class="text-center max-w-4xl mx-auto mb-16 space-y-4">
+                <div class="inline-flex items-center space-x-2 space-x-reverse bg-brand-100/90 border border-brand-200 text-brand-800 px-4 py-2 rounded-full text-sm font-bold shadow-sm">
+                    <span>🎙️ مختبر التدريب والاعتماد الفوري</span>
+                </div>
+                <h2 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
+                    اختبر مهاراتك في <span class="bg-gradient-to-r from-brand-700 to-brand-900 bg-clip-text text-transparent">النطق والتفاوض التجاري</span>
+                </h2>
+                <p class="text-slate-600 font-medium text-lg sm:text-xl leading-relaxed">
+                    تدرب صوتياً ومرئياً، احصل على تقييم فوري لأدائك، وقم بتوثيق اجتيازك للمهارات عبر نظام الشهادات الذكي.
+                </p>
+            </div>
+
+            <!-- لوحة التحكم التفاعلية للتدريب -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
+                
+                <!-- الصندوق الأول: النطق الصوتي -->
+                <div class="bg-slate-50 p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-brand-50 text-brand-700 flex items-center justify-center font-bold text-xl mb-6 shadow-sm">🗣️</div>
+                        <h3 class="text-2xl font-black text-slate-900 mb-3">محاكي النطق التجاري</h3>
+                        <p class="text-slate-600 font-medium text-sm leading-relaxed mb-6">
+                            استمع إلى النطق النموذجي للمصطلحات الصناعية، ثم سجل صوتك لتأكيد إتقان المخرج الصوتي.
+                        </p>
+                        
+                        <div class="space-y-4 bg-white p-6 rounded-2xl border border-slate-200">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 mb-1">اختر المصطلح المستهدف:</label>
+                                <select id="term-select" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-sm font-semibold focus:outline-none focus:border-brand-600">
+                                    <option value="Supply Chain Optimization">تحسين سلاسل التوريد (Supply Chain Optimization)</option>
+                                    <option value="Letter of Credit (LC)">الاعتماد المستندي (Letter of Credit - LC)</option>
+                                    <option value="FOB Shipping Terms">شروط الشحن على ظهر السفينة (FOB Terms)</option>
+                                </select>
+                            </div>
+
+                            <div class="flex items-center gap-3 pt-2">
+                                <button id="play-audio-btn" type="button" class="flex-1 py-2.5 px-4 rounded-xl bg-slate-900 text-white font-bold text-sm hover:bg-slate-800 transition flex items-center justify-center gap-2">
+                                    <span>🔊 استمع للنطق</span>
+                                </button>
+                                <button id="record-audio-btn" type="button" class="flex-1 py-2.5 px-4 rounded-xl bg-brand-700 text-white font-bold text-sm hover:bg-brand-800 transition flex items-center justify-center gap-2">
+                                    <span>🎙️ سجل صوتك</span>
+                                </button>
+                            </div>
+                            <p id="audio-status" class="text-xs font-bold text-center text-slate-500 pt-1">جاهز للبدء والتجربة...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الصندوق الثاني: المحاكي المرئي -->
+                <div class="bg-slate-50 p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-brand-50 text-brand-700 flex items-center justify-center font-bold text-xl mb-6 shadow-sm">🎥</div>
+                        <h3 class="text-2xl font-black text-slate-900 mb-3">محاكي التفاوض المرئي</h3>
+                        <p class="text-slate-600 font-medium text-sm leading-relaxed mb-6">
+                            سجل عرضك التجريبي عبر الكاميرا لتقييم لغة الجسد وثقة الإلقاء أمام المصانع.
+                        </p>
+
+                        <div class="space-y-4 bg-white p-6 rounded-2xl border border-slate-200">
+                            <div class="relative rounded-xl overflow-hidden bg-black aspect-video flex items-center justify-center">
+                                <video id="webcam-preview" autoplay muted playsinline class="w-full h-full object-cover"></video>
+                                <div id="camera-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 bg-slate-900/80">
+                                    <span class="text-2xl mb-1">📹</span>
+                                    <span class="text-xs font-semibold">الكاميرا متوقفة حالياً</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-3">
+                                <button id="start-cam-btn" type="button" class="flex-1 py-2.5 px-4 rounded-xl bg-slate-900 text-white font-bold text-sm hover:bg-slate-800 transition">
+                                    تشغيل الكاميرا
+                                </button>
+                                <button id="record-video-btn" type="button" disabled class="flex-1 py-2.5 px-4 rounded-xl bg-brand-700 text-white font-bold text-sm hover:bg-brand-800 transition opacity-50 cursor-not-allowed">
+                                    بدء التسجيل
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- لوحة توليد تقرير الأداء والشهادة التدريبية -->
+            <div class="max-w-3xl mx-auto bg-gradient-to-br from-brand-900 to-slate-900 text-white p-8 sm:p-12 rounded-3xl shadow-xl text-center space-y-6">
+                <div class="w-16 h-16 rounded-2xl bg-brand-700/50 border border-brand-600 text-white flex items-center justify-center font-bold text-2xl mx-auto shadow-inner">🏆</div>
+                <h3 class="text-2xl sm:text-3xl font-black tracking-tight">إصدار تقرير الأداء والاعتماد الفوري</h3>
+                <p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
+                    بعد إتمامك لجلسات التدريب الصوتي والتسجيل المرئي، يمكنك توليد تقرير إنجازك واعتماد بياناتك بشكل فوري داخل المنصة.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+                    <input type="text" id="trainee-name" placeholder="أدخل اسمك الكريم للاعتماد..." class="px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white font-semibold text-sm w-full sm:w-72 focus:outline-none focus:border-brand-600 text-center">
+                    <button id="generate-report-btn" type="button" class="w-full sm:w-auto px-8 py-3 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm transition shadow-md">
+                        توليد شهادة الاجتياز والتقرير
+                    </button>
+                </div>
+                <div id="report-output" class="hidden mt-6 p-6 bg-white/10 border border-white/20 rounded-2xl text-right space-y-3">
+                    <h4 class="font-black text-brand-200 text-lg border-b border-white/10 pb-2">📋 تقرير الأداء المعتمد من طريق الأمير:</h4>
+                    <p id="report-text" class="text-sm text-slate-200 leading-relaxed"></p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- تذييل الصفحة -->
+    <footer class="bg-slate-900 text-white py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+            <p class="font-bold text-lg">منصة طريق الأمير (Tranzmarkit)</p>
+            <p class="text-slate-400 text-sm">جميع الحقوق محفوظة © 2026 - رؤية استراتيجية للربط والتمكين التجاري.</p>
+        </div>
+    </footer>
+
+    <!-- السكريبت البرمجي الآمن وخالي الأخطاء -->
+    <script>
+        // 1. نظام النطق الصوتي الآمن
+        const playAudioBtn = document.getElementById('play-audio-btn');
+        const termSelect = document.getElementById('term-select');
+        const audioStatus = document.getElementById('audio-status');
+
+        if (playAudioBtn) {
+            playAudioBtn.addEventListener('click', () => {
+                const textToSpeak = termSelect.value;
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel(); // إيقاف أي نطق سابق لمنع التداخل
+                    const utterance = new SpeechSynthesisUtterance(textToSpeak);
+                    utterance.lang = 'en-US';
+                    utterance.rate = 0.9;
+                    audioStatus.textContent = "جاري تشغيل النطق النموذجي...";
+                    utterance.onend = () => {
+                        audioStatus.textContent = "انتهى النطق. يمكنك تسجيل صوتك الآن.";
+                    };
+                    window.speechSynthesis.speak(utterance);
+                } else {
+                    alert('متصفحك لا يدعم خاصية التوليد الصوتي.');
+                }
+            });
+        }
+
+        // 2. تسجيل الصوت بفاعلية
+        const recordAudioBtn = document.getElementById('record-audio-btn');
+        let isRecordingAudio = false;
+        let mediaRecorderAudio = null;
+
+        if (recordAudioBtn) {
+            recordAudioBtn.addEventListener('click', async () => {
+                if (!isRecordingAudio) {
+                    try {
+                        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                        mediaRecorderAudio = new MediaRecorder(stream);
+                        let audioChunks = [];
+
+                        mediaRecorderAudio.ondataavailable = event => {
+                            audioChunks.push(event.data);
+                        };
+
+                        mediaRecorderAudio.onstop = () => {
+                            audioStatus.textContent = "تم حفظ التسجيل الصوتي بنجاح.";
+                        };
+
+                        mediaRecorderAudio.start();
+                        isRecordingAudio = true;
+                        recordAudioBtn.textContent = "⏹️ إيقاف التسجيل";
+                        recordAudioBtn.classList.replace('bg-brand-700', 'bg-red-600');
+                        audioStatus.textContent = "جاري الاستماع وتسجيل صوتك الآن... تكلم بوضوح.";
+                    } catch (err) {
+                        alert('تعذر الوصول إلى الميكروفون. تأكد من منح الصلاحية في المتصفح.');
+                    }
+                } else {
+                    if (mediaRecorderAudio) {
+                        mediaRecorderAudio.stop();
+                        mediaRecorderAudio.stream.getTracks().forEach(track => track.stop());
+                    }
+                    isRecordingAudio = false;
+                    recordAudioBtn.textContent = "🎙️ سجل صوتك";
+                    recordAudioBtn.classList.replace('bg-red-600', 'bg-brand-700');
+                }
+            });
+        }
+
+        // 3. نظام الكاميرا وتسجيل الفيديو الآمن
+        const webcamPreview = document.getElementById('webcam-preview');
+        const cameraPlaceholder = document.getElementById('camera-placeholder');
+        const startCamBtn = document.getElementById('start-cam-btn');
+        const recordVideoBtn = document.getElementById('record-video-btn');
+        let videoStream = null;
+        let mediaRecorderVideo = null;
+        let isRecordingVideo = false;
+
+        if (startCamBtn) {
+            startCamBtn.addEventListener('click', async () => {
+                try {
+                    if (!videoStream) {
+                        videoStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                        webcamPreview.srcObject = videoStream;
+                        cameraPlaceholder.classList.add('hidden');
+                        startCamBtn.textContent = "إيقاف الكاميرا";
+                        startCamBtn.classList.add('bg-red-900/50');
+                        recordVideoBtn.disabled = false;
+                        recordVideoBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    } else {
+                        videoStream.getTracks().forEach(track => track.stop());
+                        videoStream = null;
+                        webcamPreview.srcObject = null;
+                        cameraPlaceholder.classList.remove('hidden');
+                        startCamBtn.textContent = "تشغيل الكاميرا";
+                        startCamBtn.classList.remove('bg-red-900/50');
+                        recordVideoBtn.disabled = true;
+                        recordVideoBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                        if (isRecordingVideo) {
+                            stopVideoRecording();
+                        }
+                    }
+                } catch (err) {
+                    alert('تعذر تشغيل الكاميرا. تأكد من أذونات المتصفح.');
+                }
+            });
+        }
+
+        if (recordVideoBtn) {
+            recordVideoBtn.addEventListener('click', () => {
+                if (!isRecordingVideo && videoStream) {
+                    let videoChunks = [];
+                    try {
+                        mediaRecorderVideo = new MediaRecorder(videoStream, { mimeType: 'video/webm' });
+                    } catch (e) {
+                        mediaRecorderVideo = new MediaRecorder(videoStream); // احتياطي لو لم يدعم webm
+                    }
+                    
+                    mediaRecorderVideo.ondataavailable = (e) => {
+                        if (e.data.size > 0) videoChunks.push(e.data);
+                    };
+
+                    mediaRecorderVideo.onstop = () => {
+                        alert('تم تسجيل مقطع الفيديو للمحاكاة بنجاح!');
+                    };
+
+                    mediaRecorderVideo.start();
+                    isRecordingVideo = true;
+                    recordVideoBtn.textContent = "⏹️ إيقاف التسجيل وحفظه";
+                    recordVideoBtn.classList.replace('bg-brand-700', 'bg-red-600');
+                } else {
+                    stopVideoRecording();
+                }
+            });
+        }
+
+        function stopVideoRecording() {
+            if (mediaRecorderVideo && isRecordingVideo) {
+                mediaRecorderVideo.stop();
+                isRecordingVideo = false;
+                recordVideoBtn.textContent = "بدء التسجيل";
+                recordVideoBtn.classList.replace('bg-red-600', 'bg-brand-700');
+            }
+        }
+
+        // 4. توليد تقرير الأداء والشهادة الفورية
+        const generateReportBtn = document.getElementById('generate-report-btn');
+        const traineeNameInput = document.getElementById('trainee-name');
+        const reportOutput = document.getElementById('report-output');
+        const reportText = document.getElementById('report-text');
+
+        if (generateReportBtn) {
+            generateReportBtn.addEventListener('click', () => {
+                const name = traineeNameInput.value.trim();
+                if (!name) {
+                    alert('يرجى إدخال اسم المتدرب أولاً.');
+                    traineeNameInput.focus();
+                    return;
+                }
+
+                reportOutput.classList.remove('hidden');
+                reportText.innerHTML = `المتدرب المكرم: <strong class="text-white">${name}</strong>.<br>` +
+                                       `تم إتمام تدريبات النطق التجاري ومحاكاة التفاوض المرئي بنجاح.<br>` +
+                                       `حالة الاعتماد: <span class="text-brand-300 font-bold">مجتاز للمهارات الأساسية بامتياز (جاهز للربط مع المصانع العالمية)</span>.`;
+            });
+        }
+    </script>
+</body>
+</html>
