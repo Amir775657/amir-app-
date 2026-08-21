@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>طريق الأمير - 25 كبسولة لسانية 👑</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0b0f19;
+  --card:rgba(15,23,42,0.88);
+  --border:rgba(212,175,55,0.24);
+  --gold:#FFD700;
+  --gold2:#D4AF37;
+  --green:#10b981;
+  --red:#ef4444;
+}
+body{
+  background:var(--bg);
+  color:#fff;
+  font-family:'Tajawal',system-ui,-apple-system,sans-serif;
+  min-height:100vh;
+  padding-bottom:70px;
+}
+.container{max-width:480px;margin:0 auto;padding:0 14px}
+
+/* الشريط العلوي */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  display:flex;justify-content:space-between;gap:8px;
+  padding:10px 14px;
+  background:rgba(11,15,25,0.96);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  margin:0 -14px 10px;
+}
+.badge{background:rgba(11,15,25,0.9);border:1px solid var(--border);padding:8px 12px;border-radius:14px}
+.badge-label{font-size:9px;color:rgba(255,255,255,0.6);font-weight:700}
+.badge-value{font-size:13px;font-weight:900}
+.green{color:var(--green)}
+.gold{color:var(--gold)}
+
+/* الهيدر */
+header{padding:15px 0 10px;text-align:center}
+h1{
+  font-size:32px;font-weight:900;
+  background:linear-gradient(180deg,#fff,var(--gold),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.tagline{color:var(--gold);font-size:11px;margin-top:4px;font-weight:800}
+
+/* شريط التقدم الذكي */
+.progress-container{
+  background:rgba(255,255,255,0.03);border:1px solid var(--border);
+  border-radius:16px;padding:10px 14px;margin-bottom:12px;
+}
+.progress-info{display:flex;justify-content:space-between;font-size:10px;font-weight:800;margin-bottom:6px;color:rgba(255,255,255,0.8)}
+.progress-bar-bg{width:100%;height:6px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold2),var(--gold));width:0%;transition:.4s}
+
+/* التبويبات الرئيسية */
+.main-nav{display:flex;gap:6px;margin-bottom:12px}
+.nav-tab{
+  flex:1;padding:8px;background:rgba(255,255,255,0.03);border:1px solid var(--border);
+  border-radius:12px;font-size:11px;font-weight:800;color:#aaa;cursor:pointer;text-align:center;transition:.2s;
+}
+.nav-tab.active{background:rgba(212,175,55,0.15);color:var(--gold);border-color:var(--gold)}
+
+/* الفلاتر */
+.filters{display:flex;gap:6px;overflow-x:auto;padding:5px 0 12px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.chip{
+  padding:7px 14px;background:#0a0a0a;border:1px solid #1a1a1a;
+  border-radius:16px;font-size:11px;color:#888;white-space:nowrap;
+  cursor:pointer;flex-shrink:0;font-weight:700;transition:.2s;
+}
+.chip.active{background:var(--gold);color:#000;border-color:var(--gold);font-weight:800}
+
+/* الشبكة والبطاقات */
+.grid{display:grid;gap:12px;margin-top:8px}
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:14px;backdrop-filter:blur(10px);
+  position:relative;overflow:hidden;
+}
+.card-header{
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:8px;margin-bottom:10px;
+}
+.card-title{font-size:14px;color:var(--gold);font-weight:800;display:flex;align-items:center;gap:6px}
+.card-tag{font-size:9px;background:rgba(212,175,55,0.15);color:var(--gold);padding:3px 7px;border-radius:8px;border:1px solid var(--border)}
+
+.btn-save-fav{
+  background:none;border:none;cursor:pointer;font-size:13px;opacity:0.4;transition:.2s;
+}
+.btn-save-fav.saved{opacity:1;transform:scale(1.1)}
+
+.exchange{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.side{text-align:center;padding:10px 6px;background:rgba(0,0,0,0.25);border-radius:12px;border:1px solid rgba(255,255,255,0.04)}
+.side-flag{font-size:9px;color:rgba(255,255,255,0.45);font-weight:700;margin-bottom:3px}
+.word-main{font-size:15px;font-weight:800}
+.word-main.cn{
+  font-size:20px;
+  background:linear-gradient(180deg,#fde68a,#fbbf24);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.word-sub{font-size:10px;color:var(--gold);margin-top:2px;font-weight:700;line-height:1.3}
+.word-ipa{font-size:8px;color:#666;margin-top:2px;font-family:monospace;direction:ltr}
+
+/* الأزرار */
+.btns{display:flex;justify-content:center;gap:6px;margin-top:8px}
+.btn-action{
+  width:32px;height:32px;border-radius:50%;border:none;
+  display:grid;place-items:center;cursor:pointer;transition:.15s;font-size:12px;
+}
+.btn-listen{background:var(--gold);color:#000;font-weight:800}
+.btn-listen.playing{background:#fff;transform:scale(0.95)}
+.btn-mic{background:rgba(255,255,255,0.08);border:1px solid var(--border);color:#fff}
+.btn-mic.listening{background:var(--red);animation:pulse 1s infinite}
+
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+
+.waveform-box{
+  margin-top:8px;background:#000;border:1px solid rgba(212,175,55,0.15);
+  border-radius:8px;padding:6px;display:flex;align-items:center;justify-content:center;gap:3px;height:24px;
+}
+.wave-bar{width:3px;background:var(--gold);height:6px;border-radius:2px;transition:.2s}
+.btn-mic.listening ~ .waveform-box .wave-bar{animation: waveAnim 0.6s infinite alternate}
+@keyframes waveAnim{0%{height:4px}100%{height:18px}}
+
+.ling-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.ling-box{background:#000;border:1px solid #161616;border-radius:8px;padding:6px;text-align:center}
+.ling-box .lbl{font-size:7px;color:#555;display:block;margin-bottom:2px}
+.ling-box .val{font-size:10px;font-weight:700;color:#ccc;line-height:1.3}
+.ling-box.warn{border-color:rgba(251,146,60,0.2);background:rgba(251,146,60,0.06)}
+.ling-box.warn .val{color:#fed7aa}
+
+.status-bar{margin-top:8px;text-align:center;font-size:10px;color:rgba(255,255,255,0.4);font-weight:700;min-height:16px}
+.status-bar.ok{color:var(--green)}
+.status-bar.bad{color:#fca5a5}
+
+/* قسم شهادة المُمكّن المعرفي للمشاهير */
+.celeb-section{display:none;margin-top:10px}
+.celeb-section.show{display:block}
+.certificate-card{
+  background:linear-gradient(135deg, rgba(15,23,42,0.95), rgba(30,41,59,0.95));
+  border:2px solid var(--gold);border-radius:24px;padding:20px;text-align:center;
+  box-shadow:0 10px 30px rgba(212,175,55,0.15);position:relative;overflow:hidden;
+}
+.cert-title{font-size:16px;color:var(--gold);font-weight:900;margin-bottom:4px}
+.cert-subtitle{font-size:10px;color:rgba(255,255,255,0.6);margin-bottom:14px;font-weight:700}
+.cert-name-display{font-size:20px;font-weight:900;color:#fff;margin:10px 0;border-bottom:1px dashed var(--border);padding-bottom:8px}
+.cert-desc{font-size:11px;color:#ddd;line-height:1.6;margin-bottom:14px}
+
+/* منطقة التحديات والنموذج */
+.action-area{
+  background:rgba(15,23,42,0.9);border:1px dashed var(--border);
+  border-radius:20px;padding:16px;text-align:center;margin-top:20px;
+}
+.choice-container{display:flex;gap:8px;margin:12px 0}
+.choice-btn{
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
+  color:#fff;padding:10px 8px;border-radius:12px;cursor:pointer;
+  font-weight:800;font-family:'Tajawal';flex:1;font-size:11px;line-height:1.3;transition:.3s;
+}
+.choice-btn.selected{border-color:var(--gold);background:rgba(212,175,55,0.15);color:var(--gold)}
+
+.upload-form{display:none;margin-top:12px;text-align:right}
+.upload-form.show{display:block}
+.form-group{margin-bottom:10px}
+.form-group label{font-size:10px;color:rgba(255,255,255,0.7);margin-bottom:4px;display:block;font-weight:700}
+.form-group input{
+  width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);
+  background:rgba(0,0,0,0.35);color:#fff;font-family:'Tajawal';text-align:right;font-size:12px;
+}
+.submit-btn{
+  background:linear-gradient(90deg,var(--gold),var(--gold2));
+  color:#000;border:none;width:100%;padding:12px;font-size:13px;
+  font-weight:900;border-radius:999px;cursor:pointer;margin-top:6px;font-family:'Tajawal';
+}
+
+.toast{
+  position:fixed;bottom:16px;left:50%;transform:translateX(-50%) translateY(80px);
+  opacity:0;transition:.4s;z-index:100;background:#000;border:1px solid var(--gold);
+  padding:9px 16px;border-radius:999px;font-size:10px;color:var(--gold);font-weight:800;
+  max-width:90%;text-align:center;
+}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="topbar">
+    <div class="badge"><div><div class="badge-label">الكبسولات 💎</div><div class="badge-value gold" id="count">25</div></div></div>
+    <div class="badge"><div><div class="badge-label">مكافأتك 💰</div><div class="badge-value green"><span id="earned">0.00</span> $</div></div></div>
+  </div>
+
+  <header>
+    <h1>طريق الأمير 👑</h1>
+    <div class="tagline">النسخة المتقدمة - حماية تامة + شريط إنجاز + تصدير آمن للشهادات</div>
+  </header>
+
+  <!-- شريط التقدم الذكي الحذِر -->
+  <div class="progress-container">
+    <div class="progress-info">
+      <span>مستوى الإنجاز في المفضلة اللسانية</span>
+      <span id="progText">0 / 25 (0%)</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progFill"></div>
+    </div>
+  </div>
+
+  <!-- التبويبات الرئيسية -->
+  <div class="main-nav">
+    <div class="nav-tab active" id="tabCapsules" onclick="switchMainTab('capsules')">📚 كبسولات اللغات</div>
+    <div class="nav-tab" id="tabCeleb" onclick="switchMainTab('celeb')">🌟 شهادة المُمكّن (للمشاهير)</div>
+  </div>
+
+  <!-- قسم الكبسولات -->
+  <div id="capsulesSection">
+    <div class="filters" id="filters">
+      <div class="chip active" onclick="filterTag('all',this)">الكل 25</div>
+      <div class="chip" onclick="filterTag('تحية',this)">👋 تحية 10</div>
+      <div class="chip" onclick="filterTag('موافقة',this)">✅ موافقة 7</div>
+      <div class="chip" onclick="filterTag('تجارة',this)">💰 تجارة 8</div>
+      <div class="chip" onclick="filterTag('saved',this)">⭐ مفضلتي (<span id="favCount">0</span>)</div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="action-area">
+      <h3 style="color:var(--gold);font-size:13px;">🎥 تحدي الـ 25 كبسولة - اربح حتى 2$</h3>
+      <div class="choice-container">
+        <button class="choice-btn" id="btnSingle" onclick="selectMode('single')">👤 فردي 1$<br><span style="font-size:9px">5 كلمات متتالية</span></button>
+        <button class="choice-btn" id="btnDouble" onclick="selectMode('double')">👥 ثنائي 2$<br><span style="font-size:9px">تلقين AR→EN→ZH</span></button>
+      </div>
+
+      <div class="upload-form" id="uploadForm">
+        <div style="background:rgba(212,175,55,.08);padding:8px;border-radius:8px;border:1px solid var(--border);margin-bottom:10px;">
+          <p id="inst" style="font-size:10px;color:var(--gold);line-height:1.6;text-align:center"></p>
+        </div>
+        <div class="form-group"><label>الاسم الثلاثي 📝</label><input id="userName" placeholder="اكتب اسمك الكامل"></div>
+        <div class="form-group"><label>واتساب / رقم التواصل 💳</label><input id="userWallet" placeholder="مثال: 009665xxxxxxxx"></div>
+        <div class="form-group"><label>رابط الفيديو 🎬</label><input id="videoLink" type="url" placeholder="رابط Drive أو YouTube"></div>
+        <button class="submit-btn" onclick="submitData()">إرسال للمراجعة اللسانية الآمنة 🚀</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- قسم شهادة المُمكّن المعرفي للمشاهير -->
+  <div class="celeb-section" id="celebSection">
+    <div class="certificate-card">
+      <div class="cert-title">👑 وسام طريق الأمير للتمكين المعرفي</div>
+      <div class="cert-subtitle">شهادة تقدير رسمية للمؤثرين وصناع المحتوى</div>
+      
+      <div style="margin:14px 0;text-align:right">
+        <div class="form-group">
+          <label>اسم الشخصية المؤثرة / المشهور 🌟</label>
+          <input id="celebName" placeholder="أدخل الاسم الثلاثي أو اللقب الرسمي" oninput="updateCertName(this.value)">
+        </div>
+      </div>
+
+      <div class="cert-name-display" id="certDisplayName">[اسم الشخصية المؤثرة]</div>
+      <div class="cert-desc">
+        تُمنح هذه الشهادة الفخرية تقديراً للدور الفاعل في إثراء المجتمع ونشر ثقافة التمكين المعرفي ودعم جسور التواصل التجاري واللساني عبر مبادرة <b>طريق الأمير</b>.
+      </div>
+
+      <button class="submit-btn" onclick="downloadCertificate()">📥 تحميل الشهادة الرسمية كصورة (PNG)</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"><span id="tt"></span></div>
+<canvas id="certCanvas" width="1000" height="700" style="display:none"></canvas>
+
+<script>
+const data=[
+  {id:1,ar:'أهلاً وسهلاً 🤝',en:'Hello',ea:'هَلُو - ha-LOU',cn:'你好',cp:'نِي هَاو - nǐ hǎo',ipaEn:'[həˈloʊ]',ipaZh:'[ni˨˩˦ xau˨˩˦]',init:'n / h',tone:'3+3→2+3',mouth:'nǐ: لسان يلمس سقف الحلق',warn:'لا تقل ni hao مستوية',tag:'تحية'},
+  {id:2,ar:'صباح الخير 🌅',en:'Good morning',ea:'قُد مورننغ',cn:'早安',cp:'دْزَاو أَنْ - zǎo ān',ipaEn:'[ɡʊd ˈmɔːnɪŋ]',ipaZh:'[tsau˨˩˦ an˥]',init:'z / ān',tone:'3+1',mouth:'z مثل ds في beds',warn:'zǎo ليست zao الإنجليزية',tag:'تحية'},
+  {id:3,ar:'شكراً 🙏',en:'Thank you',ea:'ثانك يو',cn:'谢谢',cp:'شِيِه شِيه - xièxie',ipaEn:'[θæŋk juː]',ipaZh:'[ɕjɛ˥˩ ɕjɛ˩]',init:'x / x',tone:'4+0',mouth:'x = ش خفيفة مبتسمة',warn:'x أخف من ش العربية',tag:'تحية'},
+  {id:4,ar:'كم السعر؟ 💰',en:'How much?',ea:'هاو متش',cn:'多少钱',cp:'دُو شاو تشيان - duō shǎo qián',ipaEn:'[haʊ mʌtʃ]',ipaZh:'[two˥ ʂau˨˩˦ tɕʰjɛn]',init:'d / sh / q',tone:'1+3+2',mouth:'qián = تشيان بنفخة',warn:'qián أصعب كلمة',tag:'تجارة'},
+  {id:5,ar:'غالي جداً 📉',en:'Too expensive',ea:'تو إكسبنسف',cn:'太贵了',cp:'تاي قوي له - tài guì le',ipaEn:'[tuː ɪkˈspensɪv]',ipaZh:'[tʰai˥˩ kwei˥˩ lə]',init:'t / g / le',tone:'4+4+0',mouth:'guì: وِي بسرعة',warn:'guì ليست قوي العربية',tag:'تجارة'},
+  {id:6,ar:'نعم ✅',en:'Yes',ea:'يَس - yes',cn:'是的',cp:'شِه دَه - shì de',ipaEn:'[jes]',ipaZh:'[ʂɨ˥˩ tə]',init:'sh / d',tone:'4+0',mouth:'sh = ش بلسان ملفوف للخلف',warn:'sh ليست ش العادية',tag:'موافقة'},
+  {id:7,ar:'لا ❌',en:'No',ea:'نو - no',cn:'不是',cp:'بُ شِه - bú shì',ipaEn:'[noʊ]',ipaZh:'[pu˧˥ ʂɨ˥˩]',init:'b / sh',tone:'2+4',mouth:'bú: نبرة 2 صاعدة مثل سؤال',warn:'bú تتغير نبرتها قبل 4',tag:'موافقة'},
+  {id:8,ar:'حسناً 👌',en:'OK / Good',ea:'أوكي - OK',cn:'好的',cp:'هَاو دَه - hǎo de',ipaEn:'[ˌoʊˈkeɪ]',ipaZh:'[xau˨˩˦ tə]',init:'h / d',tone:'3+0',mouth:'h = هـ حلقية مثل خ خفيفة',warn:'h ليست هاء عربية',tag:'موافقة'},
+  {id:9,ar:'كيف حالك؟ 🙂',en:'How are you?',ea:'هاو آر يو',cn:'你好吗',cp:'نِي هَاو مَا - nǐ hǎo ma',ipaEn:'[haʊ ɑːr juː]',ipaZh:'[ni˨˩˦ xau˨˩˦ ma]',init:'n / h / ma',tone:'3+3+0',mouth:'ma: خفيفة بدون نبرة',warn:'ma للسؤال فقط',tag:'تحية'},
+  {id:10,ar:'أنا بخير 💪',en:'I am fine',ea:'آيم فاين',cn:'我很好',cp:'وُو هِن هَاو - wǒ hěn hǎo',ipaEn:'[aɪ æm faɪn]',ipaZh:'[wo˨˩˦ xən˨˩˦ xau˨˩˦]',init:'w / h / h',tone:'3+3+3→2+3+3',mouth:'hěn: الـ en أنفية',warn:'ثلاث نبرات 3 تتغير',tag:'تحية'},
+  {id:11,ar:'ما اسمك؟ 📛',en:'What is your name?',ea:'وَتس يور نيم',cn:'你叫什么名字',cp:'نِي جياو شنما مينغزه',ipaEn:'[wɒts jɔː neɪm]',ipaZh:'[ni tɕjau ʂənmə miŋtsɨ]',init:'n / j / sh / m',tone:'3+4+2+2+4',mouth:'jiào: الـ j خفيفة مثل jeep',warn:'shénme تنطق شِمَّا بسرعة',tag:'تحية'},
+  {id:12,ar:'تشرفت بك 🌟',en:'Nice to meet you',ea:'نايس تو ميت يو',cn:'很高兴认识你',cp:'هِن قاوشينغ رنشني',ipaEn:'[naɪs tə miːt juː]',ipaZh:'[xən kauɕiŋ ɻənʂɨ ni]',init:'h / g / r / n',tone:'3+1+4+2+3',mouth:'rènshi: الـ r مثل ج فرنسية خفيفة',warn:'r الصينية ليست ر عربية',tag:'تحية'},
+  {id:13,ar:'وداعاً 👋',en:'Goodbye',ea:'قودباي',cn:'再见',cp:'دْزَاي جيان - zàijiàn',ipaEn:'[ˌɡʊdˈbaɪ]',ipaZh:[tsai˥˩ tɕjɛn˥˩],init:'z / j',tone:'4+4',mouth:'zài: الـ z مثل dz',warn:'لا تقل زايجيان',tag:'تحية'},
+  {id:14,ar:'أراك لاحقاً ⏰',en:'See you later',ea:'سي يو ليتر',cn:'回头见',cp:'هُوي تُو جيان - huítóu jiàn',ipaEn:'[siː juː ˈleɪtə]',ipaZh:'[xwei˧˥ tʰou˧˥ tɕjɛn˥˩]',init:'h / t / j',tone:'2+2+4',mouth:'huí: الـ hui = هُوِي بسرعة',warn:'tóu: نبرة 2 صاعدة',tag:'تحية'},
+  {id:15,ar:'عفواً / آسف 😔',en:'Sorry',ea:'سوري',cn:'对不起',cp:'دُوِي بوتشي - duìbuqǐ',ipaEn:'[ˈsɒri]',ipaZh:'[twei˥˩ pu tɕʰi˨˩˦]',init:'d / b / q',tone:'4+4+3',mouth:'qǐ: q = تش مع نفخة قوية',warn:'qǐ أصعب من xǐ',tag:'تحية'},
+  {id:16,ar:'لا مشكلة 🙏',en:'No problem',ea:'نو بروبلم',cn:'没问题',cp:'مِي وِنتي - méi wèntí',ipaEn:'[noʊ ˈprɒbləm]',ipaZh:'[mei˧˥ wən˥˩ tʰi˧˥]',init:'m / w / t',tone:'2+4+2',mouth:'wèntí: الـ wen = وِن',warn:'méi نبرة 2',tag:'موافقة'},
+  {id:17,ar:'ممتاز! 🎉',en:'Excellent',ea:'إكسلنت',cn:'太过了',cp:'تاي هاو له - tài hǎo le',ipaEn:'[ˈeksələnt]',ipaZh:'[tʰai˥˩ xau˨˩˦ lə]',init:'t / h / le',tone:'4+3+0',mouth:'tài: ت مع نفخة',warn:'t vs d الفرق نفخة',tag:'موافقة'},
+  {id:18,ar:'اتفقنا 🤝',en:'Deal',ea:'ديل',cn:'成交',cp:'تشنغ جياو - chéngjiāo',ipaEn:'[diːl]',ipaZh:'[ʈʂʰəŋ˧˥ tɕjau˥]',init:'ch / j',tone:'2+1',mouth:'chéng: ch ملفوفة للخلف',warn:'chéng ليست شينغ',tag:'تجارة'},
+  {id:19,ar:'أريد خصم 💸',en:'I want discount',ea:'آي وونت ديسكاونت',cn:'我要打折',cp:'وو ياو داجِه - wǒ yào dǎzhé',ipaEn:'[aɪ wɒnt ˈdɪskaʊnt]',ipaZh:'[wo˨˩˦ jau˥˩ ta˨˩˦ ʈʂɤ˧˥]',init:'w / y / d / zh',tone:'3+4+3+2',mouth:'zhé: zh = ج ثقيلة ملفوفة',warn:'zh vs j فرق كبير',tag:'تجارة'},
+  {id:20,ar:'فيه أرخص؟ 👇',en:'Cheaper?',ea:'تشيبر',cn:'有没有便宜一点',cp:'يو مييو بياني ييديان',ipaEn:'[ˈtʃiːpə]',ipaZh:'[jou mei jou pʰjɛni itjɛn]',init:'y / m / p / y',tone:'3+2+3+2+1+3',mouth:'piányi: الـ pian = بيان',warn:'yǒu méiyǒu نمط تكرار',tag:'تجارة'},
+  {id:21,ar:'أين المصنع؟ 🏭',en:'Where is factory?',ea:'وير إز فاكتوري',cn:'工厂在哪里',cp:'قونغتشانغ دْزاي نالي',ipaEn:'[weər ɪz ˈfæktəri]',ipaZh:'[kʊŋʈʂʰaŋ tsai na li]',init:'g / z / n / l',tone:'1+3+4+3+3',mouth:'zài nǎlǐ: أين',warn:'nǎlǐ نبرة 3+3',tag:'تجارة'},
+  {id:22,ar:'أريد فاتورة 🧾',en:'I want invoice',ea:'آي وونت إنفويس',cn:'我要发票',cp:'وو ياو فابياو - wǒ yào fāpiào',ipaEn:'[ˈɪnvɔɪs]',ipaZh:'[wo jau fa pʰjau]',init:'w / y / f / p',tone:'3+4+1+4',mouth:'fā: فا عادية، piào: بياو بنفخة',warn:'fāpiào نبرة 1+4',tag:'تجارة'},
+  {id:23,ar:'كم الكمية؟ 📦',en:'How many quantity?',ea:'هاو مني كوانتتي',cn:'数量是多少',cp:'شو ليانغ شِ دُو شاو',ipaEn:'[ˈkwɒntɪti]',ipaZh:'[ʂu ljau ʂɨ two ʂau]',init:'sh / l / sh / d / sh',tone:'4+4+4+1+3',mouth:'shùliàng: الـ sh ملفوفة',warn:'كلها sh متتالية',tag:'تجارة'},
+  {id:24,ar:'الشحن كم يوم؟ 🚢',en:'Shipping how many days?',ea:'شيبنغ هاو مني دايز',cn:'运输要几天',cp:'يون شو ياو جي تيان',ipaEn:'[ˈʃɪpɪŋ]',ipaZh:'[yn ʂu jau tɕi tʰjɛn]',init:'y / sh / y / j / t',tone:'4+1+4+3+1',mouth:'yùnshū: yùn فيها ü',warn:'yùn = يون مع ضم شفاه',tag:'تجارة'},
+  {id:25,ar:'شكراً جزيلاً 🌹',en:'Thank you very much',ea:'ثانك يو فري متش',cn:'非常感谢',cp:'فِي تشانغ قانشي - fēicháng gǎnxiè',ipaEn:'[ˌθæŋk juː ˈveri mʌtʃ]',ipaZh:'[fei˥ tʂʰaŋ˧˥ kan˨˩˦ ɕjɛ˥˩]',init:'f / ch / g / x',tone:'1+2+3+4',mouth:'fēicháng: في تشانغ',warn:'cháng نبرة 2 صاعدة',tag:'تحية'}
+];
+
+let curTag='all', selectedMode='single';
+let savedFavs = [];
+try {
+  savedFavs = JSON.parse(localStorage.getItem('prince_favs_safe') || '[]');
+} catch(e) {
+  savedFavs = [];
+}
+
+function switchMainTab(tab){
+  document.getElementById('tabCapsules').classList.toggle('active', tab==='capsules');
+  document.getElementById('tabCeleb').classList.toggle('active', tab==='celeb');
+  document.getElementById('capsulesSection').style.display = tab==='capsules' ? 'block' : 'none';
+  document.getElementById('celebSection').classList.toggle('show', tab==='celeb');
+}
+
+function updateCertName(val){
+  document.getElementById('certDisplayName').textContent = val.trim() ? val : '[اسم الشخصية المؤثرة]';
+}
+
+function updateProgress(){
+  const total = data.length;
+  const count = savedFavs.length;
+  const pct = Math.round((count / total) * 100);
+  document.getElementById('progText').textContent = `${count} / ${total} (${pct}%)`;
+  document.getElementById('progFill').style.width = pct + '%';
+}
+
+function toggleFav(id){
+  if(savedFavs.includes(id)){
+    savedFavs = savedFavs.filter(x => x !== id);
+    toast('⭐ تم إزالة الكبسولة من مفضلتك');
+  } else {
+    savedFavs.push(id);
+    toast('⭐ تم حفظ الكبسولة في مفضلتك بنجاح');
+  }
+  try {
+    localStorage.setItem('prince_favs_safe', JSON.stringify(savedFavs));
+  } catch(e) {}
+  
+  updateProgress();
+  render();
+}
+
+function downloadCertificate(){
+  const name = document.getElementById('celebName').value.trim();
+  if(!name){
+    toast('⚠️ يرجى كتابة اسم الشخصية المؤثرة أولاً');
+    return;
+  }
+  
+  const canvas = document.getElementById('certCanvas');
+  const ctx = canvas.getContext('2d');
+  
+  ctx.fillStyle = '#0b0f19';
+  ctx.fillRect(0, 0, 1000, 700);
+  
+  ctx.strokeStyle = '#D4AF37';
+  ctx.lineWidth = 4;
+  ctx.strokeRect(40, 40, 920, 620);
+  
+  ctx.strokeStyle = 'rgba(212,175,55,0.4)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(52, 52, 896, 596);
+  
+  ctx.fillStyle = '#FFD700';
+  ctx.font = '900 36px "Tajawal", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('طريق الأمير 👑', 500, 130);
+  
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '700 20px "Tajawal", sans-serif';
+  ctx.fillText('وسام التمكين المعرفي والمجتمعي', 500, 175);
+  
+  ctx.fillStyle = 'rgba(255,255,255,0.6)';
+  ctx.font = '500 15px "Tajawal", sans-serif';
+  ctx.fillText('تُمنح هذه الشهادة الرسمية بكل تقدير واحترام إلى:', 500, 240);
+  
+  ctx.fillStyle = '#FFD700';
+  ctx.font = '900 34px "Tajawal", sans-serif';
+  ctx.fillText(name, 500, 310);
+  
+  ctx.fillStyle = '#cccccc';
+  ctx.font = '500 16px "Tajawal", sans-serif';
+  ctx.fillText('تقديراً للدور الفاعل في إثراء المجتمع ونشر ثقافة التمكين اللساني والتجاري', 500, 390);
+  ctx.fillText('ودعم جسور التواصل بين الثقافات عبر مبادرة طريق الأمير.', 500, 425);
+  
+  ctx.fillStyle = 'rgba(212,175,55,0.8)';
+  ctx.font = '700 14px "Tajawal", sans-serif';
+  ctx.fillText('إدارة منصة طريق الأمير 2026', 500, 530);
+
+  const link = document.createElement('a');
+  link.download = `Certificate_${name}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  
+  toast('🌟 تم تنزيل الشهادة الرسمية بجودة عالية!');
+}
+
+function filterTag(tag,btn){
+  curTag=tag; 
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active')); 
+  btn.classList.add('active'); 
+  render();
+}
+
+function render(){
+  document.getElementById('favCount').textContent = savedFavs.length;
+  updateProgress();
+  const grid=document.getElementById('grid');
+  
+  let list = [];
+  if(curTag==='all') list = data;
+  else if(curTag==='saved') list = data.filter(d=>savedFavs.includes(d.id));
+  else list = data.filter(d=>d.tag===curTag);
+
+  document.getElementById('count').textContent = list.length;
+  
+  if(list.length === 0){
+    grid.innerHTML = `<div style="text-align:center;padding:30px;color:#777;font-size:12px">لا توجد كبسولات محفوظة هنا بعد. اضغط على نجمة (⭐) لأي كبسولة لإضافتها للمفضلة!</div>`;
+    return;
+  }
+
+  grid.innerHTML=list.map((d,i)=>`
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <button class="btn-save-fav ${savedFavs.includes(d.id)?'saved':''}" onclick="toggleFav(${d.id})" title="حفظ في المفضلة">⭐</button>
+          ${d.ar}
+        </div>
+        <div class="card-tag">${d.tag} • ${d.tone}</div>
+      </div>
+      <div class="exchange">
+        <div class="side">
+          <div class="side-flag">🇬🇧 EN</div>
+          <div class="word-main">${d.en}</div>
+          <div class="word-sub">${d.ea}</div>
+          <div class="word-ipa">${d.ipaEn}</div>
+          <div class="btns">
+            <button class="btn-action btn-listen" title="استماع" onclick="spk('${d.en}','en-US',0.85,this)">🔊</button>
+            <button class="btn-action btn-mic" title="اختبار النطق والمرآة" onclick="check('${d.en}','en-US',this,${i},'EN')">🎤</button>
+          </div>
+        </div>
+        <div class="side">
+          <div class="side-flag">🇨🇳 ZH</div>
+          <div class="word-main cn">${d.cn}</div>
+          <div class="word-sub">${d.cp}</div>
+          <div class="word-ipa">${d.ipaZh}</div>
+          <div class="btns">
+            <button class="btn-action btn-listen" title="بطيء" onclick="spk('${d.cn}','zh-CN',0.5,this)">🐢</button>
+            <button class="btn-action btn-listen" title="استماع" onclick="spk('${d.cn}','zh-CN',0.85,this)">🔊</button>
+            <button class="btn-action btn-mic" title="اختبار النطق والمرآة" onclick="check('${d.cn}','zh-CN',this,${i},'ZH')">🎤</button>
+          </div>
+        </div>
+      </div>
+      <div class="waveform-box">
+        <div class="wave-bar" style="height:6px"></div>
+        <div class="wave-bar" style="height:12px"></div>
+        <div class="wave-bar" style="height:18px"></div>
+        <div class="wave-bar" style="height:10px"></div>
+        <div class="wave-bar" style="height:15px"></div>
+        <div class="wave-bar" style="height:8px"></div>
+        <div class="wave-bar" style="height:14px"></div>
+      </div>
+      <div class="ling-row">
+        <div class="ling-box"><span class="lbl">المخرج</span><div class="val">${d.mouth}</div></div>
+        <div class="ling-box warn"><span class="lbl">تحذير لساني</span><div class="val">${d.warn}</div></div>
+      </div>
+      <div class="status-bar" id="st_${i}">اضغط 🎤 لفتح المرآة اللسانية والتدريب</div>
+    </div>
+  `).join('');
+}
+
+function spk(t,l,r,b){ 
+  speechSynthesis.cancel(); 
+  if(b){
+    document.querySelectorAll('.btn-listen.playing').forEach(x=>x.classList.remove('playing')); 
+    b.classList.add('playing'); 
+    setTimeout(()=>b.classList.remove('playing'),900);
+  } 
+  const u=new SpeechSynthesisUtterance(t); 
+  u.lang=l; 
+  u.rate=r; 
+  const vs=speechSynthesis.getVoices(); 
+  const v=vs.find(x=>x.lang.toLowerCase().includes(l.slice(0,2))); 
+  if(v) u.voice=v; 
+  speechSynthesis.speak(u); 
+}
+
+function calc(t,s){ 
+  t=t.toLowerCase().trim(); 
+  s=s.toLowerCase().trim(); 
+  if(t===s) return 100; 
+  const L=Math.max(t.length,s.length); 
+  let d=0; 
+  for(let k=0;k<L;k++) if(t[k]!==s[k]) d++; 
+  return Math.max(0,Math.round((1-d/L)*100)); 
+}
+
+function check(target,lang,btn,idx,type){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition; 
+  if(!SR){toast('⚠️ متصفحك لا يدعم التقييم الصوتي، جرب متصفح Chrome');return;}
+  const rec=new SR(); 
+  rec.lang=lang; 
+  btn.classList.add('listening'); 
+  const st=document.getElementById(`st_${idx}`); 
+  st.textContent='🎧 المرآة اللسانية تستمع لضبط النبرة...';
+
+  rec.start(); 
+  rec.onresult=e=>{
+    btn.classList.remove('listening'); 
+    const spoken=e.results[0][0].transcript; 
+    const sc=calc(target,spoken); 
+    if(sc>=70){
+      st.textContent=`🎯 ${type}: ${sc}% مطابقة ممتازة!`; 
+      st.className='status-bar ok';
+    } else {
+      st.textContent=`📈 ${type}: ${sc}% تحتاج لضبط النبرة`; 
+      st.className='status-bar bad';
+    }
+  }; 
+  rec.onerror=()=>{
+    btn.classList.remove('listening'); 
+    st.textContent='✗ لم يتم التقاط الصوت بوضوح، حاول مجدداً'; 
+    st.className='status-bar bad';
+  }; 
+  rec.onend=()=>btn.classList.remove('listening');
+}
+
+function selectMode(m){
+  selectedMode=m; 
+  document.getElementById('btnSingle').classList.toggle('selected',m==='single'); 
+  document.getElementById('btnDouble').classList.toggle('selected',m==='double'); 
+  document.getElementById('uploadForm').classList.add('show'); 
+  const inst=document.getElementById('inst'); 
+  const earn=document.getElementById('earned'); 
+
+  if(m==='single'){
+    inst.innerHTML='👤 <b>تحدي فردي (1.00$):</b> سجل فيديو لمدة 60 ثانية وأنطق 5 كلمات بالإنجليزية والصينية بنبرة صحيحة متتالية.'; 
+    earn.textContent='1.00';
+  }else{
+    inst.innerHTML='👥 <b>تلقين ثنائي (2.00$):</b> سجل فيديو وأنت تلقن شخصاً آخر الكلمات باللغات الثلاث (عربي ⬅️ إنجليزي ⬅️ صيني).'; 
+    earn.textContent='2.00';
+  } 
+  document.getElementById('uploadForm').scrollIntoView({behavior:'smooth'});
+}
+
+async function submitData(){
+  const name=document.getElementById('userName').value.trim(); 
+  const wallet=document.getElementById('userWallet').value.trim(); 
+  const link=document.getElementById('videoLink').value.trim();
+
+  if(!name || name.length < 3){
+    toast('⚠️ يرجى كتابة الاسم الثلاثي الصحيح');
+    return;
+  }
+  if(!wallet || wallet.length < 6){
+    toast('⚠️ يرجى إدخال رقم واتساب أو وسيلة تواصل صحيحة');
+    return;
+  }
+  if(!link || !link.startsWith('http')){
+    toast('⚠️ يرجى إدخال رابط فيديو صالح يبدأ بـ http');
+    return;
+  }
+
+  toast('⏳ جاري إرسال بياناتك بأمان لجدول الأرباح...'); 
+  
+  const url='https://script.google.com/macros/s/AKfycbyf1fHfEoqBPNPs7swXAISElp5O2QkZl-_zzjAOzmjnY4AC3TWlCBq1L7WTwy5Pmm5g4g/exec';
+
+  try{
+    await fetch(url,{
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        name,
+        wallet,
+        videoLink:link,
+        mode:selectedMode,
+        count:data.length,
+        timestamp:new Date().toISOString()
+      })
+    }); 
+    toast('🏆 تم تسجيل بياناتك بنجاح تام في جدول الأرباح!'); 
+    document.getElementById('userName').value='';
+    document.getElementById('userWallet').value='';
+    document.getElementById('videoLink').value='';
+  }catch(e){
+    toast('❌ حدث خطأ أثناء الاتصال بالخادم، حاول لاحقاً');
+  }
+}
+
+function toast(m){
+  const t=document.getElementById('toast'); 
+  document.getElementById('tt').textContent=m; 
+  t.classList.add('show'); 
+  setTimeout(()=>t.classList.remove('show'),4000);
+}
+
+render();
+</script>
+</body>
+</html>
