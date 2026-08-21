@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طريق الأمير 100%</title>
+    <style>
+        :root {
+            --bg-color: #050505;
+            --card-bg: #121212;
+            --card-hover: #1a1a1a;
+            --accent-gold: #f3ce46;
+            --text-main: #f0f0f0;
+            --text-muted: #888888;
+            --border-color: #222222;
+            --success-green: #2ecc71;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        /* 1. شعار وقيم المنصة مع عداد الغرس */
+        .mission-header {
+            text-align: center;
+            padding: 20px 10px;
+            background: radial-gradient(circle, #1a1a1a 0%, #080808 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .platform-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--accent-gold);
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        .motto-text {
+            font-size: 13px;
+            color: #d1d1d1;
+            font-style: italic;
+            font-family: serif;
+            margin-bottom: 12px;
+        }
+
+        /* عداد الغرس المطور (معالجة نقطة الضعف التفاعلية) */
+        .growth-counter-bar {
+            background: rgba(243, 206, 70, 0.08);
+            border: 1px solid rgba(243, 206, 70, 0.2);
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--accent-gold);
+        }
+
+        .ornament {
+            width: 40px;
+            height: 2px;
+            background: var(--accent-gold);
+            margin: 10px auto;
+            opacity: 0.7;
+        }
+
+        /* 2. زر التحكم المخفي (عن طريق الأمير) */
+        .toggle-section-btn {
+            background: var(--card-bg);
+            color: var(--accent-gold);
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            border-radius: 10px;
+            width: 100%;
+            text-align: right;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .collapsible-box {
+            background: var(--card-bg);
+            padding: 12px 15px;
+            border-radius: 0 0 10px 10px;
+            font-size: 12px;
+            color: #bbb;
+            margin-top: -6px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+            border-top: none;
+            line-height: 1.5;
+        }
+
+        /* 3. قسم المؤثرين والشهادات */
+        .influencer-badge {
+            background: linear-gradient(135deg, #161616, #0d0d0d);
+            border-right: 3px solid var(--accent-gold);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+            border-right-width: 3px;
+        }
+
+        .influencer-title {
+            font-size: 11px;
+            color: var(--accent-gold);
+            font-weight: bold;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .influencer-quote {
+            font-size: 12px;
+            color: #ccc;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
+        .cert-link-btn {
+            background: transparent;
+            border: 1px dashed var(--accent-gold);
+            color: var(--accent-gold);
+            padding: 4px 8px;
+            font-size: 11px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* 4. قسم الكبسولات التعليمية */
+        .capsule-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .capsule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .capsule-title {
+            font-size: 13px;
+            color: var(--accent-gold);
+            font-weight: bold;
+        }
+
+        .vocab-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-hover);
+            border: 1px solid #262626;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .vocab-data {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .vocab-zh {
+            color: var(--accent-gold);
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .vocab-ar {
+            color: var(--text-main);
+            font-size: 12px;
+        }
+
+        .vocab-audio-controls {
+            display: flex;
+            gap: 6px;
+        }
+
+        .control-btn {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .control-btn.completed {
+            border-color: var(--success-green);
+            background: rgba(46, 204, 113, 0.1);
+        }
+
+        /* 5. زر التحدي المرئي */
+        .challenge-container {
+            margin-top: 15px;
+        }
+
+        .video-challenge-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent-gold);
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 13px;
+            color: #000;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(243, 206, 70, 0.15);
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+
+    <!-- الشعار والغاية + عداد الغرس المطور -->
+    <div class="mission-header">
+        <div class="platform-title">طريق الأمير 👑</div>
+        <div class="motto-text">"أغرس ذاتك ليثمر وطنك"</div>
+        <div class="ornament"></div>
+        <div class="growth-counter-bar">
+            <span>🌱 رصيد الغرس الميداني:</span>
+            <strong id="growthCount">0 كلمات</strong>
+        </div>
+    </div>
+
+    <!-- زر عن طريق الأمير (قابل للطي) -->
+    <button onclick="toggleAboutSection()" class="toggle-section-btn">
+        <span>🎯 عن طريق الأمير والتمكين التجاري</span>
+        <span id="aboutArrow">▼</span>
+    </button>
+    <div id="aboutSection" class="collapsible-box" style="display: none;">
+        منصة لسانية تجارية متكاملة تربطك بالمصانع والأسواق العالمية مباشرة. نعتمد على هندسة الكبسولات والتوثيق الميداني الذكي لضمان أقصى كفاءة استيعابية.
+    </div>
+
+    <!-- بطاقة المؤثرين والشهادات -->
+    <div class="influencer-badge">
+        <div class="influencer-title">
+            <span>⭐ سفراء طريق الأمير (المؤثرون)</span>
+            <span>معتمد</span>
+        </div>
+        <p class="influencer-quote">"نقلة نوعية في التعليم الميداني وكسر حاجز اللغة بكل ثقة."</p>
+        <button class="cert-link-btn" onclick="openCertificatesInfo()">عرض نظام الاعتماد والشهادات الميدانية</button>
+    </div>
+
+    <!-- كبسولة تعليمية مركزة رقم 1 -->
+    <div class="capsule-container">
+        <div class="capsule-header">
+            <span class="capsule-title">📦 كبسولة: التفاوض على البضائع</span>
+            <span style="font-size: 10px; color: var(--accent-gold);" id="capsuleStatus">مكتملة: 0/2</span>
+        </div>
+
+        <!-- كلمة 1 -->
+        <div class="vocab-row">
+            <div class="vocab-data">
+                <span class="vocab-zh">大货 <span style="font-size:10px; color:#888;">(dà huò)</span></span>
+                <span class="vocab-ar">بضاعة كبيرة</span>
+            </div>
+            <div class="vocab-audio-controls">
+                <button class="control-btn" title="استماع النطق" onclick="playAudio('dà huò')">🔊</button>
+                <button class="control-btn" id="mic-1" title="تسجيل صوتي فردي وإثبات الغرس" onclick="completeItem(1, 'dà huò')">🎙️</button>
+            </div>
+        </div>
+
+        <!-- كلمة 2 -->
+        <div class="vocab-row">
+            <div class="vocab-data">
+                <span class="vocab-zh">价格 <span style="font-size:10px; color:#888;">(jià gé)</span></span>
+                <span class="vocab-ar">سعر / تكلفة</span>
+            </div>
+            <div class="vocab-audio-controls">
+                <button class="control-btn" title="استماع النطق" onclick="playAudio('jià gé')">🔊</button>
+                <button class="control-btn" id="mic-2" title="تسجيل صوتي فردي وإثبات الغرس" onclick="completeItem(2, 'jià gé')">🎙️</button>
+            </div>
+        </div>
+
+        <!-- زر التحدي المرئي الخاص بالكبسولة -->
+        <div class="challenge-container">
+            <button class="video-challenge-btn" onclick="startVideoChallenge()">
+                <span>🎥</span>
+                <span>بدء التحدي المرئي للكبسولة (الأداء الميداني)</span>
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // نظام تخزين واسترجاع المعلومات (LocalStorage State Management)
+    let userProgress = JSON.parse(localStorage.getItem('amir_path_progress')) || {
+        completedItems: [],
+        growthScore: 0
+    };
+
+    // تطبيق الحالة المحفوظة عند فتح التطبيق لضمان جودة الاستمرارية
+    window.onload = function() {
+        updateUI();
+    };
+
+    function toggleAboutSection() {
+        var section = document.getElementById("aboutSection");
+        var arrow = document.getElementById("aboutArrow");
+        if (section.style.display === "none") {
+            section.style.display = "block";
+            arrow.innerText = "▲";
+        } else {
+            section.style.display = "none";
+            arrow.innerText = "▼";
+        }
+    }
+
+    // محاكاة استماع النطق الصوتي
+    function playAudio(word) {
+        alert("جاري تشغيل النطق النموذجي للكلمة: " + word);
+    }
+
+    // تسجيل إنجاز الكلمة وتخزين البيانات محلياً
+    function completeItem(id, word) {
+        if (!userProgress.completedItems.includes(id)) {
+            userProgress.completedItems.push(id);
+            userProgress.growthScore += 1;
+            
+            // حفظ البيانات بأمان في ذاكرة المتصفح (LocalStorage)
+            localStorage.setItem('amir_path_progress', JSON.stringify(userProgress));
+            
+            updateUI();
+            alert("أحسنت! تم إتقان الكلمة وإضافتها إلى رصيد غرسك: " + word);
+        } else {
+            alert("هذه الكلمة مغروسة ومكتتمة مسبقاً في سجلك.");
+        }
+    }
+
+    // تحديث الواجهة والعداد بناءً على البيانات المخزنة
+    function updateUI() {
+        document.getElementById('growthCount').innerText = userProgress.growthScore + " كلمات";
+        document.getElementById('capsuleStatus').innerText = "مكتملة: " + userProgress.completedItems.length + "/2";
+        
+        userProgress.completedItems.forEach(id => {
+            let btn = document.getElementById('mic-' + id);
+            if(btn) {
+                btn.classList.add('completed');
+                btn.innerHTML = "✅";
+            }
+        });
+    }
+
+    function openCertificatesInfo() {
+        alert("نظام الشهادات والاعتماد: يُمنح المشاركون شهادات إتقان ميدانية بعد إتمام الكبسولات وتحديات الفيديو، ويحصل المؤثرون على شارات سفراء المنصة الموثقة.");
+    }
+
+    function startVideoChallenge() {
+        alert("جاري فتح أستوديو التسجيل المرئي لإثبات إتقان الكبسولة وتوثيق الأداء الميداني...");
+    }
+</script>
+
+</body>
+</html>
