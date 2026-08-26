@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دستور طريق الأمير - الوثيقة الرسمية</title>
+    <!-- استيراد خط عربي أصيل ومريح للعين -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1b3b36;
+            --secondary-color: #d4af37;
+            --bg-color: #fcfbfa;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --text-muted: #555555;
+            --border-color: #e6dfd3;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 40px auto;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            padding: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* لمسة جمالية في الإطار العلوي */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 30px;
+        }
+
+        h1 {
+            font-family: 'Amiri', serif;
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .meta-info {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            margin: 8px 0;
+        }
+
+        .meta-info span {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .slogans {
+            margin-top: 20px;
+            background: #fdfbf7;
+            border: 1px dashed var(--secondary-color);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Amiri', serif;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        section {
+            margin-bottom: 35px;
+        }
+
+        h2 {
+            font-family: 'Amiri', serif;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            border-right: 4px solid var(--secondary-color);
+            padding-right: 12px;
+            margin-bottom: 15px;
+        }
+
+        p, li {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            text-align: justify;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background: #faf8f5;
+            margin-bottom: 15px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-right: 3px solid var(--primary-color);
+        }
+
+        li strong {
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.15rem;
+        }
+
+        .conclusion {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid var(--border-color);
+            font-family: 'Amiri', serif;
+        }
+
+        .conclusion blockquote {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            font-style: italic;
+            margin: 0;
+        }
+
+        /* زر الطباعة والحفظ السريع كـ PDF */
+        .print-btn {
+            display: block;
+            width: 200px;
+            margin: 30px auto 0 auto;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-family: 'Cairo', sans-serif;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-align: center;
+        }
+
+        .print-btn:hover {
+            background-color: #2b5750;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                border: none;
+                box-shadow: none;
+                margin: 0;
+                padding: 20px;
+                max-width: 100%;
+            }
+            .print-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>👑 دستور "طريق الأمير"</h1>
+            <div class="meta-info">سيرة الأثر وعتبات العبور</div>
+            <div class="meta-info">المؤسس: <span>أمير محمد حسن غالب السعيدي</span></div>
+            <div class="slogans">
+                «أغرس ذاتك ليثمر وطنك»<br>
+                <span style="font-size: 1rem; color: #555;">«اليمن هو العالم: إتقان لغوي، جسور تجارية، ومن راحة كفك»</span>
+            </div>
+        </header>
+
+        <section>
+            <h2>أولاً: المنطلق الأعمق (منحوتة الإرادة والواقع)</h2>
+            <p>ما يُبنى على عجل يزول، وما يُغرس بصدق يعانق السماء. لا نعدك بوعود واهية ولا بطرق مفروشة بالحرير، بل نؤمن بأن الإرادة الحية حين تلتقي بالأداة الذكية تصنع المستحيل. وُجدت منصة "طريق الأمير" لتكون مرساة وممراً لكل شاب أتعبه الانتظار وآمن بأن طاقته أكبر من أي جدار. نحن نستثمر أدواتك البسيطة اليوم لنصنع بها ملامح غدك، بصفر تكاليف، وبوعي عملي يرى في كل عقبة فرصة للعبور.</p>
+        </section>
+
+        <section>
+            <h2>ثانياً: أركان التمكين (مثلث النور والعمل)</h2>
+            <p>يقوم صرحنا على ثلاثة أعمدة لا تستقيم الرحلة إلا بها:</p>
+            <ul>
+                <li>
+                    <strong>النافذة التجارية (فقه الحركة وسعة الأسواق):</strong>
+                    ندلك على الطريق الأقصر لتعرف كيف تدار خيوط التجارة، وتتواصل مع المصانع، وتدير صفقاتك بمرونة تامة. لست مسوقاً عابراً، بل صاحب قرار يدير بوصلة رزقه من مقعده بثقة وسلام.
+                </li>
+                <li>
+                    <strong>اللسان الحي (أرواح تتواصل وأسواق تنفتح):</strong>
+                    اللغة ليست قواعد جامدة، بل مفاتيح للقلوب والفرص. نقدم لك زاداً يومياً مركزاً بأربع لغات (العربية، الإنجليزية، الصينية، الإسبانية)، لتقف في أي ميدان دولي ناطقاً بلسان الثقة، بلا خوف ولا تردد.
+                </li>
+                <li>
+                    <strong>التوثيق والاعتماد (شاهد الصدق واستحقاق الجدارة):</strong>
+                    نؤمن بما تنجزه يداك وما ينطقه لسانك. تفاعلك المستمر، ومثابرتك، ومحاولاتك الموثقة تترجم إلى سجل نجاح يعكس كفاءتك، لتكون شهادة إتقانك هي خاتم الثقة الذي تفاخر به.
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>ثالثاً: خطة العبور (سيرة الفيروسية والأثر)</h2>
+            <ul>
+                <li>
+                    <strong>المرحلة الأولى (وثبة الشارع - مبادرة "اليمن هو العالم"):</strong>
+                    من قلب النابض الحقيقي نبدأ؛ من عيون شبابنا وعفوية ألسنتهم وهم يتبادلون لغات الكون بلا تكلف. نكسر حاجز الخوف معاً، ونؤكد للعالم أجمع أن الطاقات اليمنية لا تقف عند حد.
+                </li>
+                <li>
+                    <strong>المرحلة الثانية (غراسة الأثر - التمكين المستدام):</strong>
+                    حين تلتئم السواعد وتتلاقى العقول على هذا الدرب، يتحول مجتمعنا إلى بيئة تعاون ذكية تفتح أبواب الرزق الحقيقي، وتترك أثراً عميقاً يمتد ليعمّر الأفق ويرفع شأن المجتمع.
+                </li>
+            </ul>
+        </section>
+
+        <div class="conclusion">
+            <h2>خاتمة العهد</h2>
+            <blockquote>«أغرس ذاتك ليثمر وطنك».. هي الوصية والغاية. فكل كلمة لغة تتعلّمها، وكل خطوة نجاح تخطوها بثبات، هي قطرة عرق طاهرة تسقي بها تراب أرضك، ليزهر وطنك عزةً، وعمراً، ومجداً لا يزول.</blockquote>
+        </div>
+
+        <button class="print-btn" onclick="window.print()">حفظ كـ PDF / طباعة</button>
+    </div>
+
+</body>
+</html>
